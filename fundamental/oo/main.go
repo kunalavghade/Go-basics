@@ -13,11 +13,15 @@ Loops in Go
 */
 
 func main() {
-	cards := deck{newCard(), "Two of Hearts", "Three of Diamonds"}
-	cards = append(cards, "Four of Clubs")
+	cards := newDeck()
+	cards.saveToFile("my_cards")
 
 	// index, curent value := range collection
-	cards.print()
+	// cards.print()
+	cards.shuffle()
+	hand, remainingCards := deal(cards, 5)
+	hand.print()
+	remainingCards.print()
 
 }
 
