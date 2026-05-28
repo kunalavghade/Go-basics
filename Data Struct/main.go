@@ -19,4 +19,11 @@ func main() {
 
 	fmt.Printf("%+v\n", kunal)
 	fmt.Printf("%+v\n", kunal2)
+
+	var kunal3 person
+	kunal3.firstName = "Kunal"
+	kunal3.lastName = "Avghade"
+	kunal3.age = 25
+
+	fmt.Printf("%+v\n", kunal3)
 }
