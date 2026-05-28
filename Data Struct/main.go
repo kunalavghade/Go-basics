@@ -7,11 +7,25 @@ type contactInfo struct {
 	zipCode int
 }
 
+type job struct {
+	title string
+}
+
 type person struct {
 	firstName string
 	lastName  string
 	contact   contactInfo
 	age       int
+	job
+}
+
+func (p person) printInfo() {
+	fmt.Printf("%+v\n", p)
+}
+
+func (p person) updateName(newName string) string {
+	p.firstName = newName
+	return p.firstName
 }
 
 func main() {
@@ -25,10 +39,10 @@ func main() {
 		age: 25,
 	}
 	// or
-	kunal2 := person{"Kunal", "Avghade", contactInfo{email: "kunal2@example.com", zipCode: 67890}, 25}
+	kunal2 := person{"Kunal", "Avghade", contactInfo{email: "kunal2@example.com", zipCode: 67890}, 25, job{title: "Software Engineer"}}
 
-	fmt.Printf("%+v\n", kunal)
-	fmt.Printf("%+v\n", kunal2)
+	kunal.printInfo()
+	kunal2.printInfo()
 
 	var kunal3 person
 	kunal3.firstName = "Kunal"
@@ -38,6 +52,8 @@ func main() {
 		zipCode: 11111,
 	}
 	kunal3.age = 25
-
-	fmt.Printf("%+v\n", kunal3)
+	kunal3.job = job{title: "Product Manager"}
+	kunal3.printInfo()
+	kunal3.updateName("K")
+	kunal3.printInfo()
 }
