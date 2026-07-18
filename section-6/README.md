@@ -1,10 +1,13 @@
-# Interfaces
+# Section 6: Interfaces
 
 Welcome to the **Interfaces** section.
 
-## Contents
-(To be added)
+## Topics
+- [1-interfaces](./1-interfaces/README.md)
+- [2-http-interface](./2-http-interface/README.md)
+- [3-filereader](./3-filereader/README.md)
+- [4-shape](./4-shape/README.md)
 
 ---
-**Previous Section:** [Map](../Map/README.md)
-**Next Section:** [Channel and Routine](../Channel%20and%20Routine/README.md)
+**Previous Section:** [Section 5: Map](../section-5/README.md)
+**Next Section:** [Section 7: Channel and Routine](../section-7/README.md)
