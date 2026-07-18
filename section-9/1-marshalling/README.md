@@ -1,35 +1,57 @@
-# JSON Marshalling in Go
+# 1. JSON Marshalling
 
-This module covers the basics of converting Go data structures (like `structs`) into JSON format, a process known as **Marshalling**.
+This topic covers converting Go data structures (structs) into JSON.
 
-## Key Concepts
+### Code Example (`main.go`)
 
-1. **`json.Marshal`**
-   - **Purpose:** Converts a Go data structure into a JSON-encoded byte slice.
-   - **Usage:** `byteSlice, err := json.Marshal(data)`
-   - **Output:** Compact JSON without spaces or newlines.
+```go
+package main
 
-2. **`json.MarshalIndent`**
-   - **Purpose:** Similar to `json.Marshal`, but formats the output to make it human-readable.
-   - **Usage:** `byteFormated, err := json.MarshalIndent(data, prefix, indent)`
-   - **Example:** `json.MarshalIndent(jane, "-", " ")` adds a `-` prefix and spaces for indentation.
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+)
+// user struct represents the data we want to marshal into JSON.
+// Struct tags like `json:"name"` dictate the key names in the resulting JSON.
+type user struct {
+	Name     string `json:"name"`
+	Age      int    `json:"age"`
+	Phone    string `json:"phone"`
+	IsActive bool   `json:"is_active"`
+}
 
-3. **Struct Tags**
-   - Go uses struct tags to define how struct fields map to JSON keys.
-   - **Syntax:** `` `json:"key_name"` ``
-   - **Example:**
-     ```go
-     type user struct {
-         Name     string `json:"name"`
-         Age      int    `json:"age"`
-         Phone    string `json:"phone"`
-         IsActive bool   `json:"is_active"`
-     }
-     ```
-   - These tags ensure the resulting JSON has lowercase keys with underscores, matching the expected JSON convention rather than Go's Capitalized exported fields.
+func main() {
+	jane := user {
+		Name: "jane",
+		Age: 23,
+		IsActive: true,
+		Phone: "34567-890-567",
+	}
+	// json.Marshal converts a Go data structure (like our user struct) into a JSON-encoded byte slice.
+	// The output is compact, without spaces or newlines.
+	byteSlice, err := json.Marshal(jane)
+	if err != nil{
+		log.Println(err)
+	}
+	fmt.Println(string(byteSlice))
 
-## Quick Run
+	// json.MarshalIndent works similarly but formats the JSON for readability.
+	// The second argument is a prefix for each line (here "-"), and the third is the indent (here " ").
+	byteFormated, err := json.MarshalIndent(jane, "-", " ")
+	if err != nil{
+		log.Println(err)
+	}
+	fmt.Println(string(byteFormated))
+}
+```
 
+#### Explanation
+1. **Struct Tags:** By adding `` `json:"key_name"` `` tags to our struct fields, we tell Go exactly what key to use in the output JSON. This ensures keys like `is_active` are used instead of the Go struct field `IsActive`.
+2. **`json.Marshal`:** This function takes a Go struct and converts it into a JSON byte slice in a minified, compact format (no spaces or newlines).
+3. **`json.MarshalIndent`:** This function also encodes the struct to JSON but neatly formats it with the specified prefix (`"-"`) and indentation (`" "`) to make it easily readable for humans or debugging.
+
+## Run
 ```bash
 go run main.go
 ```
