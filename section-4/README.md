@@ -1,10 +1,10 @@
-# Strings
+# Section 4: Strings
 
 Welcome to the **Strings** section.
 
-## Contents
-(To be added)
+## Topics
+- [1-strings](./1-strings/README.md)
 
 ---
-**Previous Section:** [Data Struct](../Data%20Struct/README.md)
-**Next Section:** [Map](../Map/README.md)
+**Previous Section:** [Section 3: Data Struct](../section-3/README.md)
+**Next Section:** [Section 5: Map](../section-5/README.md)

@@ -1,10 +1,12 @@
-# Section 10
+# Section 8
 
-Welcome to **section-10**.
+Welcome to **Section 8**.
 
-## Contents
-(To be added)
+## Topics
+- [1-file](./1-file/README.md)
+- [3-temp](./3-temp/README.md)
+- [5-embed](./5-embed/README.md)
 
 ---
-**Previous Section:** [Channel and Routine](../Channel%20and%20Routine/README.md)
-**Next Section:** [section-11](../section-11/README.md)
+**Previous Section:** [Section 7: Channel and Routine](../section-7/README.md)
+**Next Section:** [Section 9](../section-9/README.md)
