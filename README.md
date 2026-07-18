@@ -5,12 +5,12 @@ Go-Lang
 
 Explore the concepts covered in this repository section by section:
 
-1. [A simple Start](./A%20simple%20Start/README.md)
-2. [Fundamental](./Fundamental/README.md)
-3. [Data Struct](./Data%20Struct/README.md)
-4. [Strings](./Strings/README.md)
-5. [Map](./Map/README.md)
-6. [Interfaces](./Interfaces/README.md)
-7. [Channel and Routine](./Channel%20and%20Routine/README.md)
-8. [section-10](./section-10/README.md)
-9. [section-11](./section-11/README.md)
+1. [Section 1: A simple Start](./section-1/README.md)
+2. [Section 2: Fundamental](./section-2/README.md)
+3. [Section 3: Data Struct](./section-3/README.md)
+4. [Section 4: Strings](./section-4/README.md)
+5. [Section 5: Map](./section-5/README.md)
+6. [Section 6: Interfaces](./section-6/README.md)
+7. [Section 7: Channel and Routine](./section-7/README.md)
+8. [Section 8](./section-8/README.md)
+9. [Section 9](./section-9/README.md)

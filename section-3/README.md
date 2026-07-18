@@ -1,10 +1,10 @@
-# Data Struct
+# Section 3: Data Struct
 
 Welcome to the **Data Struct** section.
 
-## Contents
-(To be added)
+## Topics
+- [1-data-struct](./1-data-struct/README.md)
 
 ---
-**Previous Section:** [Fundamental](../Fundamental/README.md)
-**Next Section:** [Strings](../Strings/README.md)
+**Previous Section:** [Section 2: Fundamental](../section-2/README.md)
+**Next Section:** [Section 4: Strings](../section-4/README.md)
