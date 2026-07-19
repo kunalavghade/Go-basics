@@ -9,9 +9,10 @@ import (
 )
 
 type application struct {
-	errorLog *log.Logger
-	infoLog  *log.Logger
-	userRepo UserRepo
+	errorLog    *log.Logger
+	infoLog     *log.Logger
+	userRepo    UserRepo
+	templateDir string
 }
 
 func main() {
@@ -22,9 +23,10 @@ func main() {
 	defer db.Close()
 
 	app := &application{
-		errorLog: log.New(os.Stderr, "ERROR: ", log.Ltime|log.LstdFlags|log.Lmicroseconds|log.Lshortfile),
-		infoLog:  log.New(os.Stdout, "INFO: ", log.Ltime|log.LstdFlags|log.Lmicroseconds|log.Lshortfile),
-		userRepo: NewSQLUserRepo(db),
+		errorLog:    log.New(os.Stderr, "ERROR: ", log.Ltime|log.LstdFlags|log.Lmicroseconds|log.Lshortfile),
+		infoLog:     log.New(os.Stdout, "INFO: ", log.Ltime|log.LstdFlags|log.Lmicroseconds|log.Lshortfile),
+		userRepo:    NewSQLUserRepo(db),
+		templateDir: "./section-13-web/templates",
 	}
 	app.infoLog.Println("server running on :8080")
 	if err := app.Serve(); err != nil {

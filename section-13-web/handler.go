@@ -18,9 +18,10 @@ const htmlContent = `
 `
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	pageTitle := "Home"
-	pageContent := "Welcome to my website"
-	fmt.Fprintf(w, htmlContent, pageTitle, pageContent)
+	// pageTitle := "Home"
+	// pageContent := "Welcome to my website"
+	// fmt.Fprintf(w, htmlContent, pageTitle, pageContent)
+	app.render(w, "index.html", nil)
 }
 
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
