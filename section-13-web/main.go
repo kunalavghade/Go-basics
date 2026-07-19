@@ -13,6 +13,7 @@ type application struct {
 	infoLog     *log.Logger
 	userRepo    UserRepo
 	templateDir string
+	tp          *TemplateRenderer
 }
 
 func main() {
@@ -28,6 +29,7 @@ func main() {
 		userRepo:    NewSQLUserRepo(db),
 		templateDir: "./section-13-web/templates",
 	}
+	app.tp = NewTemplateRenderer(true, app.templateDir)
 	app.infoLog.Println("server running on :8080")
 	if err := app.Serve(); err != nil {
 		log.Fatal(err)
