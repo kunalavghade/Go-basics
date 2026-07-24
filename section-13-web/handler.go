@@ -35,3 +35,23 @@ func (app *application) contact(w http.ResponseWriter, r *http.Request) {
 	pageContent := "Contact page"
 	fmt.Fprintf(w, htmlContent, pageTitle, pageContent)
 }
+
+func (app *application) login(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"Error":    "",
+		"Username": "",
+		"Password": "",
+	}
+	app.render(w, "login.html", data)
+}
+
+func (app *application) register(w http.ResponseWriter, r *http.Request) {
+	data := map[string]interface{}{
+		"Error":           "",
+		"Username":        "",
+		"Email":           "",
+		"Password":        "",
+		"ConfirmPassword": "",
+	}
+	app.render(w, "register.html", data)
+}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"path"
 	"path/filepath"
@@ -27,11 +28,13 @@ func NewTemplateRenderer(isDev bool, dir string) *TemplateRenderer {
 func (t *TemplateRenderer) Render(w http.ResponseWriter, name string, data interface{}) {
 	tmpl, err := t.getTemplate(name)
 	if err != nil {
+		fmt.Println("getTemplate error:", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 	err = tmpl.ExecuteTemplate(w, "base.html", data)
 	if err != nil {
+		fmt.Println("Template error:", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}

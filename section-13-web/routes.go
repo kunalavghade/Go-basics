@@ -11,5 +11,7 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("/", app.home)
 	mux.HandleFunc("/about", app.about)
 	mux.HandleFunc("/contact", app.contact)
+	mux.HandleFunc("/login", app.login)
+	mux.HandleFunc("/register", app.register)
 	return mux
 }
