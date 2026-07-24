@@ -30,7 +30,7 @@ func (t *TemplateRenderer) Render(w http.ResponseWriter, name string, data inter
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	err = tmpl.Execute(w, data)
+	err = tmpl.ExecuteTemplate(w, "base.html", data)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
@@ -62,7 +62,7 @@ func (t *TemplateRenderer) templete(name string) (*template.Template, error) {
 	tmpletePath := path.Join(t.templateDir, name)
 	files := []string{tmpletePath}
 
-	layoutPath := path.Join(t.templateDir, "layout/*.html")
+	layoutPath := path.Join(t.templateDir, "layouts/*.html")
 	layout, err := filepath.Glob(layoutPath)
 	if err == nil {
 		files = append(files, layout...)
