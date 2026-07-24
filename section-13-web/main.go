@@ -13,6 +13,7 @@ type application struct {
 	infoLog     *log.Logger
 	userRepo    UserRepo
 	templateDir string
+	publicDir   string
 	tp          *TemplateRenderer
 }
 
@@ -28,6 +29,7 @@ func main() {
 		infoLog:     log.New(os.Stdout, "INFO: ", log.Ltime|log.LstdFlags|log.Lmicroseconds|log.Lshortfile),
 		userRepo:    NewSQLUserRepo(db),
 		templateDir: "./section-13-web/templates",
+		publicDir:   "./section-13-web/public",
 	}
 	app.tp = NewTemplateRenderer(true, app.templateDir)
 	app.infoLog.Println("server running on :8080")
