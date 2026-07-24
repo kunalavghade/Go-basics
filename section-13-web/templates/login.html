@@ -1,23 +1,28 @@
 {{define "content"}}
-<h1>Login Page</h1>
-{{if .Error}}
-<div>{{ .Error }} </div>
-{{end}}
+<div class="page-container glass-effect fade-in">
+    <h1 class="anime-title">Login</h1>
+    
+    {{if .Error}}
+    <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ .Error }} </div>
+    {{end}}
 
-<form action="/login" method="post" acceptcharset="UTF-8" class="form">
+    <form action="/login" method="post" acceptcharset="UTF-8" class="form">
+        <div class="input-group">
+            <label for="username">Username :</label>
+            <input type="text" id="username" value="{{.Username}}" required>
+        </div>
 
-    <label for="username">Username :</label>
-    <input type="text" id="username" value="{{.Username}}" required>
+        <div class="input-group">
+            <label for="password">Password :</label>
+            <input type="password" id="password" value="{{.Password}}" required>
+        </div>
 
-    <label for="password">Password :</label>
-    <input type="password" id="password" value="{{.Password}}" required>
+        <button type="submit" class="glow-button"> Login </button>
+    </form>
 
-    <button type="submit"> Login </button>
-</form>
-
-<p>
-    Dont have id Then register
-    <a href="/register"> register here </a>
-</p>
-
+    <p style="margin-top: 20px;">
+        Don't have an ID? 
+        <a href="/register"> Register here </a>
+    </p>
+</div>
 {{end}}

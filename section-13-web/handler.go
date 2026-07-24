@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -18,22 +17,15 @@ const htmlContent = `
 `
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	// pageTitle := "Home"
-	// pageContent := "Welcome to my website"
-	// fmt.Fprintf(w, htmlContent, pageTitle, pageContent)
 	app.render(w, "index.html", nil)
 }
 
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
-	pageTitle := "About"
-	pageContent := "About page"
-	fmt.Fprintf(w, htmlContent, pageTitle, pageContent)
+	app.render(w, "about.html", nil)
 }
 
 func (app *application) contact(w http.ResponseWriter, r *http.Request) {
-	pageTitle := "Contact"
-	pageContent := "Contact page"
-	fmt.Fprintf(w, htmlContent, pageTitle, pageContent)
+	app.render(w, "contact.html", nil)
 }
 
 func (app *application) login(w http.ResponseWriter, r *http.Request) {
