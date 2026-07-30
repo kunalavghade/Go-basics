@@ -16,6 +16,10 @@ const htmlContent = `
 </html>
 `
 
+func (app *application) errorpage(w http.ResponseWriter, r *http.Request) {
+	panic("Helo")
+}
+
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	app.render(w, "index.html", nil)
 }

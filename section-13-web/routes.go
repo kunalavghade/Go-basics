@@ -13,5 +13,8 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("/contact", app.contact)
 	mux.HandleFunc("/login", app.login)
 	mux.HandleFunc("/register", app.register)
-	return mux
+	mux.HandleFunc("/error", app.errorpage)
+
+	handler := app.recover(app.logger(mux))
+	return handler
 }
