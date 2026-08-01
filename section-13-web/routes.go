@@ -15,6 +15,6 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("/register", app.register)
 	mux.HandleFunc("/error", app.errorpage)
 
-	handler := app.recover(app.logger(mux))
+	handler := app.recover(app.logger(app.session.Enable((mux))))
 	return handler
 }
