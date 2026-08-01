@@ -21,6 +21,7 @@ func (app *application) errorpage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
+	app.infoLog.Printf("user Id : %v", app.session.Get(r, "userId"))
 	app.render(w, "index.html", nil)
 }
 
@@ -33,6 +34,7 @@ func (app *application) contact(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) login(w http.ResponseWriter, r *http.Request) {
+	app.session.Put(r, "userId", 123)
 	data := map[string]interface{}{
 		"Error":    "",
 		"Username": "",
