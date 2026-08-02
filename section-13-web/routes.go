@@ -2,19 +2,27 @@ package main
 
 import (
 	"net/http"
+
+	"github.com/justinas/alice"
 )
 
 func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
+
+	defaultMiddleware := alice.New(app.logger, app.recover)
+	secureMiddleware := alice.New(app.session.Enable)
+
 	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir(app.publicDir))))
 
-	mux.HandleFunc("/", app.home)
+	mux.Handle("/", secureMiddleware.Then(http.HandlerFunc(app.home)))
+	mux.Handle("/login", secureMiddleware.Then(http.HandlerFunc(app.login)))
+	mux.Handle("/submit", secureMiddleware.Append(app.requireAuth).Then(http.HandlerFunc(app.submit)))
+	mux.Handle("/register", secureMiddleware.Then(http.HandlerFunc(app.register)))
+	mux.Handle("/error", secureMiddleware.Then(http.HandlerFunc(app.errorpage)))
 	mux.HandleFunc("/about", app.about)
 	mux.HandleFunc("/contact", app.contact)
-	mux.HandleFunc("/login", app.login)
-	mux.HandleFunc("/register", app.register)
-	mux.HandleFunc("/error", app.errorpage)
 
-	handler := app.recover(app.logger(app.session.Enable((mux))))
-	return handler
+	// handler := app.recover(app.logger(app.session.Enable((mux))))
+	// return handler
+	return defaultMiddleware.Then(mux)
 }
