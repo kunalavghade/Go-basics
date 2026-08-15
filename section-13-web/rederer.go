@@ -16,6 +16,12 @@ type TemplateRenderer struct {
 	templateDir string
 }
 
+type templateData struct {
+	Form            Form
+	isAuthenticated bool
+	Flash           string
+}
+
 func NewTemplateRenderer(isDev bool, dir string) *TemplateRenderer {
 	return &TemplateRenderer{
 		cache:       make(map[string]*template.Template),
@@ -35,7 +41,7 @@ func (t *TemplateRenderer) Render(w http.ResponseWriter, name string, data inter
 	err = tmpl.ExecuteTemplate(w, "base.html", data)
 	if err != nil {
 		fmt.Println("Template error:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Internal Server Error : %v", err), http.StatusInternalServerError)
 		return
 	}
 }

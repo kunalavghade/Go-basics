@@ -1,27 +1,27 @@
 {{define "content"}}
 <div class="page-container glass-effect fade-in">
     <h1 class="anime-title">Login</h1>
-    
+
     {{if .Error}}
     <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ .Error }} </div>
     {{end}}
 
     <form action="/login" method="post" acceptcharset="UTF-8" class="form">
         <div class="input-group">
-            <label for="username">Username :</label>
-            <input type="text" id="username" value="{{.Username}}" required>
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" value="{{.Email}}" required>
         </div>
 
         <div class="input-group">
             <label for="password">Password :</label>
-            <input type="password" id="password" value="{{.Password}}" required>
+            <input type="password" id="password" name="password" value="{{.Password}}" required>
         </div>
 
         <button type="submit" class="glow-button"> Login </button>
     </form>
 
     <p style="margin-top: 20px;">
-        Don't have an ID? 
+        Don't have an ID?
         <a href="/register"> Register here </a>
     </p>
 </div>
