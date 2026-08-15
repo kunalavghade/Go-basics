@@ -1,24 +1,32 @@
 {{define "content"}}
 <div class="page-container glass-effect fade-in">
+
     <h1 class="anime-title">Login</h1>
-
-    {{if .Error}}
-    <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ .Error }} </div>
+    {{with .Form}}
+    {{with .Errors.Get "generic"}}
+    <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
     {{end}}
-
     <form action="/login" method="post" acceptcharset="UTF-8" class="form">
         <div class="input-group">
             <label for="email">Email :</label>
-            <input type="email" id="email" name="email" value="{{.Email}}" required>
+            <input type="email" id="email" name="email" value="{{.Get " email"}}" required>
+            {{with .Errors.Get "email"}}
+            <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
+            {{end}}
         </div>
 
         <div class="input-group">
             <label for="password">Password :</label>
-            <input type="password" id="password" name="password" value="{{.Password}}" required>
+            <input type="password" id="password" name="password" value="{{.Get " password"}}" required>
+            {{with .Errors.Get "password"}}
+            <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
+            {{end}}
         </div>
 
         <button type="submit" class="glow-button"> Login </button>
     </form>
+
+    {{end}}
 
     <p style="margin-top: 20px;">
         Don't have an ID?
