@@ -54,7 +54,10 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		form.required("email", "password").maxLength("email", 50).minLength("password", 6)
 		if !form.valid() {
 			app.errorLog.Printf("Invalid form data %v", form.Errors)
-			app.render(w, r, "login.html", nil)
+			form.Errors.Add("generic", "Invalid credentials")
+			app.render(w, r, "login.html", &templateData{
+				Form: form,
+			})
 			return
 		}
 
@@ -63,7 +66,9 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 
 		app.infoLog.Printf("Logged in with email %s and password %s", email, password)
 	}
-	app.render(w, r, "login.html", nil)
+	app.render(w, r, "login.html", &templateData{
+		Form: NewForm(r.PostForm),
+	})
 }
 
 func (app *application) register(w http.ResponseWriter, r *http.Request) {

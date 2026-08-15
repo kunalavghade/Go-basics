@@ -9,11 +9,11 @@ import (
 
 type errors map[string][]string
 
-func (e errors) add(field, msg string) {
+func (e errors) Add(field, msg string) {
 	e[field] = append(e[field], msg)
 }
 
-func (e errors) get(field string) string {
+func (e errors) Get(field string) string {
 	if messages, ok := e[field]; ok {
 		return messages[0]
 	}
@@ -36,7 +36,7 @@ func (form *Form) required(fields ...string) *Form {
 	for _, field := range fields {
 		value := form.Get(field)
 		if strings.TrimSpace(value) == "" {
-			form.Errors.add(field, "This field is required")
+			form.Errors.Add(field, "This field is required")
 		}
 	}
 	return form
@@ -45,7 +45,7 @@ func (form *Form) required(fields ...string) *Form {
 func (form *Form) maxLength(field string, max int) *Form {
 	value := form.Get(field)
 	if len(value) > max {
-		form.Errors.add(field, fmt.Sprintf("%s must be less than %d characters", field, max))
+		form.Errors.Add(field, fmt.Sprintf("%s must be less than %d characters", field, max))
 	}
 	return form
 }
@@ -53,7 +53,7 @@ func (form *Form) maxLength(field string, max int) *Form {
 func (form *Form) minLength(field string, min int) *Form {
 	value := form.Get(field)
 	if len(value) < min {
-		form.Errors.add(field, fmt.Sprintf("%s must be at least %d characters", field, min))
+		form.Errors.Add(field, fmt.Sprintf("%s must be at least %d characters", field, min))
 	}
 	return form
 }
@@ -64,7 +64,7 @@ func (form *Form) matches(field string, pattern *regexp.Regexp) *Form {
 		return form
 	}
 	if !pattern.MatchString(value) {
-		form.Errors.add(field, fmt.Sprintf("%s does not match pattern", field))
+		form.Errors.Add(field, fmt.Sprintf("%s does not match pattern", field))
 	}
 	return form
 }
