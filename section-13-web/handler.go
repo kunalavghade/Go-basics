@@ -16,6 +16,8 @@ const htmlContent = `
 </html>
 `
 
+const loggedInUserKey = `logged_user_id`
+
 func (app *application) errorpage(w http.ResponseWriter, r *http.Request) {
 	panic("Helo")
 }
@@ -64,7 +66,20 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 
-		app.infoLog.Printf("Logged in with email %s and password %s", email, password)
+		id, err := app.userRepo.AuthenticateUser(email, password)
+		if err != nil {
+			form.Errors.Add("generic", err.Error())
+			app.render(w, r, "login.html", &templateData{
+				Form: form,
+			})
+			return
+		}
+
+		// logged in
+		app.session.Put(r, loggedInUserKey, id)
+
+		app.infoLog.Printf("Logged in successfully")
+		http.Redirect(w, r, "/submit", http.StatusSeeOther)
 	}
 	app.render(w, r, "login.html", &templateData{
 		Form: NewForm(r.PostForm),
