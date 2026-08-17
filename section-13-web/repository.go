@@ -48,27 +48,34 @@ func (r *SQLUserRepo) CreateUser(name, email, password, avatar string) (int, err
 	ctx := context.Background()
 	tx, err := r.db.BeginTx(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return 0, err
 	}
 	query := `insert into user(name, email, hashed_password) values (?, ?, ?)`
+	println(query)
 	stmt, err := tx.PrepareContext(ctx, query)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return 0, err
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(name, email, password)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return 0, err
+	}
+
+	result, err := stmt.Exec(name, email, string(hashedPassword))
+	if err != nil {
+		log.Println(err)
 		return 0, err
 	}
 	id, _ := result.LastInsertId()
 
 	profileStmt, err := tx.PrepareContext(ctx, `insert into profile(user_id, avatar) values (?,?)`)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		err = tx.Rollback()
 		return 0, err
 	}
@@ -77,7 +84,7 @@ func (r *SQLUserRepo) CreateUser(name, email, password, avatar string) (int, err
 	_, err = profileStmt.Exec(id, avatar)
 	if err != nil {
 		err = tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
 		return 0, err
 	}
 	return int(id), tx.Commit()
@@ -106,7 +113,11 @@ func (r *SQLUserRepo) GetUserByEmail(email string) (*User, error) {
 	)
 
 	if err != nil {
-		log.Fatal(err)
+		if err == sql.ErrNoRows {
+			return nil, ErrInvalidCredentials
+		}
+		log.Println(err)
+		return nil, err
 	}
 	return &usr, nil
 }
@@ -115,7 +126,8 @@ func (r *SQLUserRepo) GetUsers() ([]*User, error) {
 	query := `SELECT id, name, email, hashed_password, created_at FROM user`
 	row, err := r.db.Query(query)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 	defer row.Close()
 	var users []*User
@@ -130,7 +142,8 @@ func (r *SQLUserRepo) GetUsers() ([]*User, error) {
 		)
 
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return nil, err
 		}
 		users = append(users, &usr)
 	}
