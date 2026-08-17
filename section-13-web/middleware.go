@@ -41,6 +41,5 @@ func (app *application) requireAuth(next http.Handler) http.Handler {
 }
 
 func (app *application) isAthenticated(r *http.Request) bool {
-	isAuth, ok := r.Context().Value(contextAuthKey).(bool)
-	return ok && isAuth
+	return app.session.Exists(r, loggedInUserKey)
 }
