@@ -41,12 +41,6 @@ func (app *application) contact(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) login(w http.ResponseWriter, r *http.Request) {
-	// app.session.Put(r, "userId", 123)
-	// data := map[string]interface{}{
-	// 	"Error":    "",
-	// 	"Username": "",
-	// 	"Password": "",
-	// }
 	if r.Method == http.MethodPost {
 		if err := r.ParseForm(); err != nil {
 			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
@@ -87,12 +81,52 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) register(w http.ResponseWriter, r *http.Request) {
-	// data := map[string]interface{}{
-	// 	"Error":           "",
-	// 	"Username":        "",
-	// 	"Email":           "",
-	// 	"Password":        "",
-	// 	"ConfirmPassword": "",
-	// }
-	// app.render(w, r, "register.html", data)
+	if r.Method == http.MethodPost {
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			return
+		}
+		form := NewForm(r.PostForm)
+		form.required("name", "email", "password", "confirm_password", "avatar").maxLength("email", 50).minLength("password", 6)
+		if !form.valid() {
+			app.errorLog.Printf("Invalid form data %v", form.Errors)
+			form.Errors.Add("generic", "Invalid input")
+			app.render(w, r, "register.html", &templateData{
+				Form: form,
+			})
+			return
+		}
+
+		email := r.FormValue("email")
+		password := r.FormValue("password")
+		name := r.FormValue("name")
+		avatar := r.FormValue("avatar")
+		confirmPassword := r.FormValue("confirm_password")
+
+		if password != confirmPassword {
+			form.Errors.Add("generic", "Password and confirm password do not match")
+			app.render(w, r, "register.html", &templateData{
+				Form: form,
+			})
+			return
+		}
+
+		id, err := app.userRepo.CreateUser(name, email, password, avatar)
+		if err != nil {
+			form.Errors.Add("generic", err.Error())
+			app.render(w, r, "register.html", &templateData{
+				Form: form,
+			})
+			return
+		}
+
+		//logged in
+		// app.session.Put(r, loggedInUserKey, id)
+
+		app.infoLog.Printf("User registered successfully : %v", id)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	}
+	app.render(w, r, "register.html", &templateData{
+		Form: NewForm(r.PostForm),
+	})
 }
