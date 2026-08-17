@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-type errors map[string][]string
+type FormErrores map[string][]string
 
-func (e errors) Add(field, msg string) {
+func (e FormErrores) Add(field, msg string) {
 	e[field] = append(e[field], msg)
 }
 
-func (e errors) Get(field string) string {
+func (e FormErrores) Get(field string) string {
 	if messages, ok := e[field]; ok {
 		return messages[0]
 	}
@@ -22,7 +22,7 @@ func (e errors) Get(field string) string {
 
 type Form struct {
 	url.Values
-	Errors errors
+	Errors FormErrores
 }
 
 func NewForm(form url.Values) *Form {

@@ -3,13 +3,19 @@ package main
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"log"
+
+	"golang.org/x/crypto/bcrypt"
 )
+
+var ErrInvalidCredentials = errors.New("invalid credentials")
 
 type UserRepo interface {
 	CreateUser(name, email, password, avatar string) (int, error)
 	GetUserByEmail(email string) (*User, error)
 	GetUsers() ([]*User, error)
+	AuthenticateUser(email, password string) (int, error)
 }
 
 type SQLUserRepo struct {
@@ -20,6 +26,22 @@ func NewSQLUserRepo(db *sql.DB) UserRepo {
 	return &SQLUserRepo{
 		db: db,
 	}
+}
+
+func (r *SQLUserRepo) AuthenticateUser(email, password string) (int, error) {
+	user, err := r.GetUserByEmail(email)
+	if err != nil {
+		return 0, err
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		log.Println("Error in user authentication", err)
+		if err == bcrypt.ErrMismatchedHashAndPassword {
+			return 0, ErrInvalidCredentials
+		}
+		return 0, err
+	}
+	return user.ID, nil
 }
 
 func (r *SQLUserRepo) CreateUser(name, email, password, avatar string) (int, error) {

@@ -22,7 +22,7 @@ type application struct {
 }
 
 func main() {
-	db, err := connectToDB("./users.db")
+	db, err := connectToDB("./data.db")
 	if err != nil {
 		log.Fatal(err)
 	}
