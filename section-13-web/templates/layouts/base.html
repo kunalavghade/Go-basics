@@ -12,6 +12,11 @@
 
 <body>
     <main>
+        {{with .Flash}}
+        <div class="flash">
+            <p>{{ . }}</p>
+        </div>
+        {{end}}
         {{template "content" .}}
     </main>
 

@@ -10,7 +10,7 @@
 
         <div class="input-group">
             <label for="name">Name :</label>
-            <input type="text" id="name" name="name" value="{{.Get "name"}}" required>
+            <input type="text" id="name" name="name" value="{{.Get " name"}}" required>
             {{with .Errors.Get "name"}}
             <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
             {{end}}
@@ -18,7 +18,7 @@
 
         <div class="input-group">
             <label for="email">Email :</label>
-            <input type="email" id="email" name="email" value="{{.Get "email"}}" required>
+            <input type="email" id="email" name="email" value="{{.Get " email"}}" required>
             {{with .Errors.Get "email"}}
             <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
             {{end}}
@@ -26,7 +26,7 @@
 
         <div class="input-group">
             <label for="password">Password :</label>
-            <input type="password" id="password" name="password" value="{{.Get "password"}}" required>
+            <input type="password" id="password" name="password" value="{{.Get " password"}}" required>
             {{with .Errors.Get "password"}}
             <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
             {{end}}
@@ -34,7 +34,7 @@
 
         <div class="input-group">
             <label for="confirm_password">Confirm Password :</label>
-            <input type="password" id="confirm_password" name="confirm_password" value="{{.Get "confirm_password"}}"
+            <input type="password" id="confirm_password" name="confirm_password" value="{{.Get " confirm_password"}}"
                 required>
             {{with .Errors.Get "confirm_password"}}
             <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
@@ -43,7 +43,7 @@
 
         <div class="input-group">
             <label for="avatar">Avatar URL :</label>
-            <input type="url" id="avatar" name="avatar" value="{{.Get "avatar"}}" required>
+            <input type="url" id="avatar" name="avatar" value="{{.Get " avatar"}}" required>
             {{with .Errors.Get "avatar"}}
             <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
             {{end}}
