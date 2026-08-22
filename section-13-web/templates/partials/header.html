@@ -5,8 +5,13 @@
             <a href="/">Home</a>
             <a href="/about">About</a>
             <a href="/contact">Contact</a>
+            {{if .IsAuthenticated}}
+            <a href="/submit"> Submit </a>
+            <a href="/logout">Logout</a>
+            {{else}}
             <a href="/login">Login</a>
             <a href="/register">Register</a>
+            {{end}}
         </nav>
     </div>
 </header>
