@@ -2,14 +2,12 @@
 <div class="page-container glass-effect fade-in">
     <h1 class="anime-title">Submit a Post</h1>
 
-    {{if .Error}}
-    <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ .Error }} </div>
-    {{end}}
+
 
     <form action="/login" method="post" acceptcharset="UTF-8" class="form">
         <div class="input-group">
             <label for="username">Post URL :</label>
-            <input type="text" id="username" value="{{.Username}}" required>
+
         </div>
 
         <button type="submit" class="glow-button"> Submit </button>

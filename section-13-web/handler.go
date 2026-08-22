@@ -60,7 +60,7 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 
-		id, err := app.userRepo.AuthenticateUser(email, password)
+		_, err := app.userRepo.AuthenticateUser(email, password)
 		if err != nil {
 			form.Errors.Add("generic", err.Error())
 			app.render(w, r, "login.html", &templateData{
@@ -70,10 +70,12 @@ func (app *application) login(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// logged in
-		app.session.Put(r, loggedInUserKey, id)
+		app.session.Put(r, loggedInUserKey, email)
+		app.session.Put(r, "flash", "Your logged In !")
 
 		app.infoLog.Printf("Logged in successfully")
 		http.Redirect(w, r, "/submit", http.StatusSeeOther)
+		return
 	}
 	app.render(w, r, "login.html", &templateData{
 		Form: NewForm(r.PostForm),
@@ -125,8 +127,15 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 
 		app.infoLog.Printf("User registered successfully : %v", id)
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
 	}
 	app.render(w, r, "register.html", &templateData{
 		Form: NewForm(r.PostForm),
 	})
+}
+
+func (app *application) logout(w http.ResponseWriter, r *http.Request) {
+	app.session.Remove(r, loggedInUserKey)
+	app.session.Put(r, "flash", "You logged out successfully !")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
