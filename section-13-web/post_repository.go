@@ -85,7 +85,7 @@ func calculateMataData(TotalRecords, Page, PageSize int) MetaData {
 }
 
 type PostRepository interface {
-	CreatePost(userId int, title, url string) (int, error)
+	CreatePost(title, url string, userId int) (int, error)
 	AddComment(userId, postId int, body string) (int, error)
 	AddVote(userId, postId int) (int, error)
 	GetAllPosts(filter Filter) ([]Post, MetaData, error)
@@ -93,15 +93,17 @@ type PostRepository interface {
 	GetComments(postID int) ([]Comment, error)
 }
 
-type SQLPostRepository struct {
+type SQLPostRepo struct {
 	db *sql.DB
 }
 
-func NewSQLPostRepository(db *sql.DB) *SQLPostRepository {
-	return &SQLPostRepository{db: db}
+func NewSQLPostRepository(db *sql.DB) PostRepository {
+	return &SQLPostRepo{
+		db: db,
+	}
 }
 
-func (r *SQLPostRepository) CreatePost(title, url string, userId int) (int, error) {
+func (r *SQLPostRepo) CreatePost(title, url string, userId int) (int, error) {
 	stmt := `INSERT INTO posts (title, url, user_id) VALUES (?, ?, ?)`
 	res, err := r.db.Exec(stmt, title, url, userId)
 	if err != nil {
@@ -117,7 +119,7 @@ func (r *SQLPostRepository) CreatePost(title, url string, userId int) (int, erro
 	return int(postId), nil
 }
 
-func (r *SQLPostRepository) AddComment(userId, postId int, body string) (int, error) {
+func (r *SQLPostRepo) AddComment(userId, postId int, body string) (int, error) {
 	stmt := `INSERT INTO comments (user_id, post_id, body) VALUES (?, ?, ?)`
 	res, err := r.db.Exec(stmt, userId, postId, body)
 	if err != nil {
@@ -130,7 +132,7 @@ func (r *SQLPostRepository) AddComment(userId, postId int, body string) (int, er
 	return int(commentId), nil
 }
 
-func (r *SQLPostRepository) AddVote(userId, postId int) (int, error) {
+func (r *SQLPostRepo) AddVote(userId, postId int) (int, error) {
 	stmt := `INSERT INTO votes (user_id, post_id) VALUES (?, ?)`
 	_, err := r.db.Exec(stmt, userId, postId)
 	if err != nil {
@@ -142,7 +144,7 @@ func (r *SQLPostRepository) AddVote(userId, postId int) (int, error) {
 	return 1, nil
 }
 
-func (r *SQLPostRepository) GetByID(id int) (*Post, error) {
+func (r *SQLPostRepo) GetById(id int) (*Post, error) {
 	query := `
 		SELECT 
 			p.id,
@@ -150,11 +152,11 @@ func (r *SQLPostRepository) GetByID(id int) (*Post, error) {
 			p.url, 
 			p.user_id,
 			u.name,
-			COUNT(DISTINCT v.id) AS votes_count,
+			COUNT(DISTINCT v.user_id) AS votes_count,
 			COUNT(DISTINCT c.id) AS comments_count,
 			p.created_at 
 		FROM posts p
-		INNER JOIN users u ON p.user_id = u.id 
+		INNER JOIN user u ON p.user_id = u.id 
 		LEFT JOIN votes v ON v.post_id = p.id
 		LEFT JOIN comments c ON c.post_id = p.id
 		WHERE p.id = ?
@@ -182,7 +184,7 @@ func (r *SQLPostRepository) GetByID(id int) (*Post, error) {
 	return post, nil
 }
 
-func (r *SQLPostRepository) GetAllPosts(filter Filter) ([]Post, MetaData, error) {
+func (r *SQLPostRepo) GetAllPosts(filter Filter) ([]Post, MetaData, error) {
 	if err := filter.validate(); err != nil {
 		return nil, MetaData{}, err
 	}
@@ -195,11 +197,11 @@ func (r *SQLPostRepository) GetAllPosts(filter Filter) ([]Post, MetaData, error)
 			p.url, 
 			p.user_id,
 			u.name,
-			COUNT(DISTINCT v.id) AS votes_count,
+			COUNT(DISTINCT v.user_id) AS votes_count,
 			COUNT(DISTINCT c.id) AS comments_count,
 			p.created_at 
 		FROM posts p
-		INNER JOIN users u ON p.user_id = u.id 
+		INNER JOIN user u ON p.user_id = u.id 
 		LEFT JOIN votes v ON v.post_id = p.id
 		LEFT JOIN comments c ON c.post_id = p.id
 	`
@@ -221,11 +223,10 @@ func (r *SQLPostRepository) GetAllPosts(filter Filter) ([]Post, MetaData, error)
 			p.created_at
 	`
 
-	if filter.OrderBy != "" {
-		query += "ORDER BY " + filter.OrderBy
-		if filter.OrderDir != "" {
-			query += " " + filter.OrderDir
-		}
+	if filter.OrderBy == "popular" {
+		query += "ORDER BY votes_count DESC"
+	} else if filter.OrderBy == "newest" {
+		query += "ORDER BY p.created_at DESC"
 	} else {
 		query += "ORDER BY p.created_at DESC"
 	}
@@ -262,11 +263,11 @@ func (r *SQLPostRepository) GetAllPosts(filter Filter) ([]Post, MetaData, error)
 	return posts, calculateMataData(posts[0].TotalRecords, filter.Page, filter.PageSize), nil
 }
 
-func (r *SQLPostRepository) GetComments(postID int) ([]Comment, error) {
+func (r *SQLPostRepo) GetComments(postID int) ([]Comment, error) {
 	query := `
 		SELECT c.id,c.body,c.user_id,c.post_id,u.name,c.created_at 
 		FROM comments c
-		LEFT JOIN users u ON c.user_id = u.id
+		LEFT JOIN user u ON c.user_id = u.id
 		WHERE c.post_id = ?
 		ORDER BY c.created_at DESC
 	`
