@@ -15,6 +15,7 @@ type application struct {
 	errorLog    *log.Logger
 	infoLog     *log.Logger
 	userRepo    UserRepo
+	PostRepo    PostRepository
 	templateDir string
 	publicDir   string
 	tp          *TemplateRenderer
@@ -36,6 +37,7 @@ func main() {
 		errorLog:    log.New(os.Stderr, "ERROR: ", log.Ltime|log.LstdFlags|log.Lmicroseconds|log.Lshortfile),
 		infoLog:     log.New(os.Stdout, "INFO: ", log.Ltime|log.LstdFlags|log.Lmicroseconds|log.Lshortfile),
 		userRepo:    NewSQLUserRepo(db),
+		PostRepo:    NewSQLPostRepository(db),
 		templateDir: "./section-13-web/templates",
 		publicDir:   "./section-13-web/public",
 		session:     session,
@@ -45,6 +47,14 @@ func main() {
 	if err := app.Serve(); err != nil {
 		log.Fatal(err)
 	}
+
+	// comment := "My comment"
+	// comments, err := app.PostRepo.GetComments(1)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Printf("%+v\n", comments)
+
 }
 
 func connectToDB(name string) (*sql.DB, error) {
