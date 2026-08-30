@@ -182,6 +182,86 @@ func (r *SQLPostRepository) GetByID(id int) (*Post, error) {
 	return post, nil
 }
 
+func (r *SQLPostRepository) GetAllPosts(filter Filter) ([]Post, MetaData, error) {
+	if err := filter.validate(); err != nil {
+		return nil, MetaData{}, err
+	}
+
+	query := `
+		SELECT 
+			COUNT(*) OVER() AS total_records,
+			p.id,
+			p.title,
+			p.url, 
+			p.user_id,
+			u.name,
+			COUNT(DISTINCT v.id) AS votes_count,
+			COUNT(DISTINCT c.id) AS comments_count,
+			p.created_at 
+		FROM posts p
+		INNER JOIN users u ON p.user_id = u.id 
+		LEFT JOIN votes v ON v.post_id = p.id
+		LEFT JOIN comments c ON c.post_id = p.id
+	`
+	var args []any
+
+	if filter.SearchQuery != "" {
+		query += "WHERE p.title ILIKE ? OR p.url ILIKE ? OR u.name ILIKE ?"
+		search := strings.ToLower(filter.SearchQuery)
+		args = append(args, "%"+search+"%")
+	}
+
+	query += `
+		GROUP BY 
+			p.id,
+			p.title,
+			p.url,
+			p.user_id,
+			u.name,
+			p.created_at
+	`
+
+	if filter.OrderBy != "" {
+		query += "ORDER BY " + filter.OrderBy
+		if filter.OrderDir != "" {
+			query += " " + filter.OrderDir
+		}
+	} else {
+		query += "ORDER BY p.created_at DESC"
+	}
+
+	query += `
+		LIMIT ? OFFSET ?
+	`
+	args = append(args, filter.PageSize, (filter.Page-1)*filter.PageSize)
+
+	println(query)
+	rows, err := r.db.Query(query, args...)
+	if err != nil {
+		return nil, MetaData{}, err
+	}
+	defer rows.Close()
+	var posts []Post
+	for rows.Next() {
+		post := Post{}
+		err := rows.Scan(
+			&post.TotalRecords,
+			&post.ID,
+			&post.Title,
+			&post.URL,
+			&post.UserID,
+			&post.UserName,
+			&post.VotesCount,
+			&post.CommentsCount,
+			&post.CreatedAt)
+		if err != nil {
+			return nil, MetaData{}, err
+		}
+		posts = append(posts, post)
+	}
+	return posts, calculateMataData(posts[0].TotalRecords, filter.Page, filter.PageSize), nil
+}
+
 func (r *SQLPostRepository) GetComments(postID int) ([]Comment, error) {
 	query := `
 		SELECT c.id,c.body,c.user_id,c.post_id,u.name,c.created_at 
