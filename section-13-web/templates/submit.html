@@ -1,21 +1,33 @@
 {{define "content"}}
 <div class="page-container glass-effect fade-in">
-    <h1 class="anime-title">Submit a Post</h1>
+    <h1 class="anime-title">Create New Post</h1>
 
+    {{with .Form}}
+    {{with .Errors.Get "generic"}}
+    <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
+    {{end}}
+    <form action="/submit" method="post" acceptcharset="UTF-8" class="form">
 
-
-    <form action="/login" method="post" acceptcharset="UTF-8" class="form">
         <div class="input-group">
-            <label for="username">Post URL :</label>
-
+            <label for="title">Title :</label>
+            <input type="text" id="title" name="title" value="{{.Get " title"}}" required>
+            {{with .Errors.Get "title"}}
+            <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
+            {{end}}
         </div>
 
-        <button type="submit" class="glow-button"> Submit </button>
+        <div class="input-group">
+            <label for="url">URL :</label>
+            <input type="url" id="url" name="url" value="{{.Get " url"}}" required>
+            {{with .Errors.Get "url"}}
+            <div style="color: var(--neon-pink); margin-bottom: 15px; text-align: center;">{{ . }} </div>
+            {{end}}
+        </div>
+
+        <button type="submit" class="glow-button"> Submit Post </button>
     </form>
 
-    <p style="margin-top: 20px;">
-        Don't have an ID?
-        <a href="/register"> Register here </a>
-    </p>
+    {{end}}
+
 </div>
 {{end}}

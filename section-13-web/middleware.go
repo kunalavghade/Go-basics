@@ -11,6 +11,7 @@ import (
 type contextKey string
 
 const contextAuthKey contextKey = "isAuthenticated"
+const contextAuthUser contextKey = "auth_user"
 
 func (app *application) logger(next http.Handler) http.Handler {
 
@@ -50,7 +51,7 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		_, err := app.userRepo.GetUserByEmail(app.session.GetString(r, loggedInUserKey))
+		user, err := app.userRepo.GetUserByEmail(app.session.GetString(r, loggedInUserKey))
 		if errors.Is(err, sql.ErrNoRows) {
 			app.session.Remove(r, loggedInUserKey)
 			next.ServeHTTP(w, r)
@@ -61,6 +62,7 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 		}
 
 		ctx := context.WithValue(r.Context(), contextAuthKey, true)
+		ctx = context.WithValue(ctx, contextAuthUser, user)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})
