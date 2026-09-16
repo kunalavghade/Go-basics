@@ -3,7 +3,7 @@ version: '1.0.0'
 services:
   postgress:
     image: postgres:12-alpine
-    container_name: "postgres"
+    container_name: "postgres_go_api"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -15,9 +15,8 @@ services:
     networks:
       - golang_api_network
 
-  localstack:
+  localstacks3:
     image: localstack/localstack:latest
-    container_name: "localstack"
     ports:
       - "4572:4566"
     environment:
