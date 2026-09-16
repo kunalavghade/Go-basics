@@ -3,7 +3,9 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"math"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -292,4 +294,26 @@ func (r *SQLPostRepo) GetComments(postID int) ([]Comment, error) {
 		comments = append(comments, comment)
 	}
 	return comments, nil
+}
+
+func (p *Post) GetVoteCount() string {
+	if p.VotesCount > 1 {
+		return fmt.Sprintf("%d votes", p.VotesCount)
+	}
+	return fmt.Sprintf("%d vote", p.VotesCount)
+}
+
+func (p *Post) GetCommentCount() string {
+	if p.CommentsCount > 1 {
+		return fmt.Sprintf("%d comments", p.CommentsCount)
+	}
+	return fmt.Sprintf("%d comment", p.CommentsCount)
+}
+
+func (p *Post) Host() string {
+	ur, err := url.Parse(p.URL)
+	if err != nil {
+		return "<invalid-host>"
+	}
+	return ur.Hostname()
 }
