@@ -19,8 +19,12 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+}
+
+.app-wrapper {
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 @keyframes gradientBG {
@@ -89,15 +93,29 @@ body {
 }
 
 /* Main Content & Containers */
-main {
+.main-content {
     flex: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.page-container {
+.flash {
+    background: rgba(255, 0, 127, 0.2);
+    border: 1px solid var(--neon-pink);
+    color: var(--text-primary);
+    padding: 15px 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+}
+
+.page-container, .glass-effect {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);

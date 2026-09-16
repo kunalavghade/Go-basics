@@ -8,19 +8,21 @@
     <link rel="stylesheet" href="/public/css/style.css">
 </head>
 
-{{template "header.html" .}}
-
 <body>
-    <main>
-        {{with .Flash}}
-        <div class="flash">
-            <p>{{ . }}</p>
-        </div>
-        {{end}}
-        {{template "content" .}}
-    </main>
+    <div class="app-wrapper">
+        {{template "header.html" .}}
+        
+        <main class="main-content">
+            {{with .Flash}}
+            <div class="flash glass-effect fade-in">
+                <p>{{ . }}</p>
+            </div>
+            {{end}}
+            {{template "content" .}}
+        </main>
 
-    {{template "footer.html" .}}
+        {{template "footer.html" .}}
+    </div>
 </body>
 
 </html>
