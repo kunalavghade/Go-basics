@@ -1,0 +1,40 @@
+version: '1.0.0'
+
+services:
+  postgress:
+    image: postgres:12-alpine
+    container_name: "postgres"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: [ PASSWORD ]
+      POSTGRES_DB: postgres
+    ports:
+      - "5439:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - golang_api_network
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: "localstack"
+    ports:
+      - "4572:4566"
+    environment:
+      - SERVICES=s3,sqs
+      - DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - localstack_data:/tmp/localstack
+    networks:
+      - golang_api_network
+
+volumes:
+  postgres_data:
+  localstack_data:
+
+networks:
+  golang_api_network:
+    driver: bridge
