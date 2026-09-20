@@ -1,4 +1,4 @@
-.PHONY: help build run dev lint migrate-up migrate-down
+.PHONY: help build run dev lint migrate-up migrate-down format
 
 help:
 	@echo "Available commands:"
@@ -6,6 +6,7 @@ help:
 	echo "run - Run the application"
 	echo "dev - Run the application in development mode"
 	echo "lint - Lint the application"
+	echo "format - Format the application"
 	echo "migrate-up - Apply database migrations"
 	echo "migrate-down - Rollback database migrations"
 
@@ -22,9 +23,13 @@ dev:
 	@echo "Starting development server..."
 	go run ./cmd/api
 
-lint:
+lint: format
 	golangci-lint run ./...
-	
+
+format:
+	@gofmt -l -w .
+	@goimports -w .
+
 
 migrate-up:
 	migrate -path db/migrations -database "postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable" up
