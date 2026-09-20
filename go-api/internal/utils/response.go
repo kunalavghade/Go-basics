@@ -25,23 +25,23 @@ type PaginationMeta struct {
 	TotalRecords int `json:"total_records"`
 }
 
-func SucessResponse(c *gin.Context, msg string, data interface{}) Response {
-	return c.JSON(http.StatusOK, Response{
+func SucessResponse(c *gin.Context, msg string, data interface{}) {
+	c.JSON(http.StatusOK, Response{
 		Success: true,
 		Message: msg,
 		Data:    data,
 	})
 }
 
-func CreatedResponse(c *gin.Context, msg string, data interface{}) Response {
-	return c.JSON(http.StatusCreated, Response{
+func CreatedResponse(c *gin.Context, msg string, data interface{}) {
+	c.JSON(http.StatusCreated, Response{
 		Success: true,
 		Message: msg,
 		Data:    data,
 	})
 }
 
-func ErrorResponse(c *gin.Context, statusCode int, msg string, err error) Response {
+func ErrorResponse(c *gin.Context, statusCode int, msg string, err error) {
 	response := Response{
 		Success: false,
 		Message: msg,
@@ -49,38 +49,38 @@ func ErrorResponse(c *gin.Context, statusCode int, msg string, err error) Respon
 	if err != nil {
 		response.Error = err.Error()
 	}
-	return c.JSON(statusCode, response)
+	c.JSON(statusCode, response)
 }
 
-func BadRequestResponse(c *gin.Context, msg string, err error) Response {
-	return ErrorResponse(c, http.StatusBadRequest, msg, err)
+func BadRequestResponse(c *gin.Context, msg string, err error) {
+	ErrorResponse(c, http.StatusBadRequest, msg, err)
 }
 
-func NotFoundResponse(c *gin.Context, msg string, err error) Response {
-	return ErrorResponse(c, http.StatusNotFound, msg, err)
+func NotFoundResponse(c *gin.Context, msg string, err error) {
+	ErrorResponse(c, http.StatusNotFound, msg, err)
 }
 
-func UnprocessableEntityResponse(c *gin.Context, msg string, err error) Response {
-	return ErrorResponse(c, http.StatusUnprocessableEntity, msg, err)
+func UnprocessableEntityResponse(c *gin.Context, msg string, err error) {
+	ErrorResponse(c, http.StatusUnprocessableEntity, msg, err)
 }
 
-func UnauthorizedResponse(c *gin.Context, msg string, err error) Response {
-	return ErrorResponse(c, http.StatusUnauthorized, msg, err)
+func UnauthorizedResponse(c *gin.Context, msg string, err error) {
+	ErrorResponse(c, http.StatusUnauthorized, msg, err)
 }
 
-func ForbiddenResponse(c *gin.Context, msg string, err error) Response {
-	return ErrorResponse(c, http.StatusForbidden, msg, err)
+func ForbiddenResponse(c *gin.Context, msg string, err error) {
+	ErrorResponse(c, http.StatusForbidden, msg, err)
 }
 
-func InternalServerErrorResponse(c *gin.Context, msg string, err error) Response {
-	return ErrorResponse(c, http.StatusInternalServerError, msg, err)
+func InternalServerErrorResponse(c *gin.Context, msg string, err error) {
+	ErrorResponse(c, http.StatusInternalServerError, msg, err)
 }
 
-func ConflictResponse(c *gin.Context, msg string, err error) Response {
-	return ErrorResponse(c, http.StatusConflict, msg, err)
+func ConflictResponse(c *gin.Context, msg string, err error) {
+	ErrorResponse(c, http.StatusConflict, msg, err)
 }
 
-func PaginationResponse(c *gin.Context, data interface{}, page, limit, totalItems int) Response {
+func PaginationResponse(c *gin.Context, data interface{}, page, limit, totalItems int) {
 	totalPages := (totalItems + limit - 1) / limit
 
 	response := Response{
@@ -100,5 +100,5 @@ func PaginationResponse(c *gin.Context, data interface{}, page, limit, totalItem
 			},
 		},
 	}
-	return c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, response)
 }
