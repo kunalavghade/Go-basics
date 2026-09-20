@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func New(cfg config.DatabaseConfig) (*gorm.DB, error) {
+func New(cfg *config.DatabaseConfig) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		cfg.Host,
