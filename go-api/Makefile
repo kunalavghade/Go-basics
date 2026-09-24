@@ -28,7 +28,7 @@ lint: format
 
 format:
 	@gofmt -l -w .
-	@goimports -w .
+	@$(shell go env GOPATH)/bin/goimports -w .
 
 
 migrate-up:
