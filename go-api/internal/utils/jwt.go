@@ -17,7 +17,7 @@ type Claims struct {
 }
 
 // Generates access and refresh token
-func GenerateTockenPair(cfg *config.Config, userID int, email string, role string) (accessToken string, refreshToken string, err error) {
+func GenerateTockenPair(cfg *config.Config, userID int, email, role string) (accessToken, refreshToken string, err error) {
 
 	// AccessToken
 	accessClaims := &Claims{
@@ -57,7 +57,7 @@ func GenerateTockenPair(cfg *config.Config, userID int, email string, role strin
 }
 
 // Validate the Token
-func ValidateToken(tokenString string, secret string) (*Claims, error) {
+func ValidateToken(tokenString, secret string) (*Claims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(t *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	})
