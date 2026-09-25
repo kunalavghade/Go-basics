@@ -36,13 +36,21 @@ func (s *Server) SetupRoutes() *gin.Engine {
 
 	api := router.Group("/api")
 	{
-		auth := api.Group("/auth") // nolint:gocritic // Manage readbility
-		{
+		auth := api.Group("/auth")
+		{ // nolint:gocritic // Manage readbility
 			auth.POST("/register", s.Register)
 			auth.POST("/login", s.Login)
 			auth.POST("/refresh", s.RefreshToken)
 			auth.POST("/logout", s.Logout)
 		}
+
+		protected := api.Group("/")
+		protected.Use(s.authMiddleware())
+		{ // nolint:gocritic // Manage readbility
+			protected.GET("/profile", s.GetProfile)
+			protected.PUT("/profile", s.UpdateProfile)
+		}
+
 	}
 
 	return router
