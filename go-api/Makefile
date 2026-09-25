@@ -32,10 +32,10 @@ format:
 
 
 migrate-up:
-	migrate -path db/migrations -database "postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable" up
+	$(shell go env GOPATH)/bin/migrate -path db/migrations -database "postgresql://postgres:postgres@localhost:5439/postgres?sslmode=disable" up
 
 migrate-down:
-	migrate -path db/migrations -database "postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable" down
+	$(shell go env GOPATH)/bin/migrate -path db/migrations -database "postgresql://postgres:postgres@localhost:5439/postgres?sslmode=disable" down
 
 
 docker-up:
