@@ -3,7 +3,7 @@ CREATE TYPE order_status AS ENUM (
     'confirmed',
     'shipped',
     'delivered',
-    'cancelled',
+    'cancelled'
 );
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
