@@ -24,9 +24,11 @@ func NewAuthService(db *gorm.DB, config *config.Config) *AuthService {
 }
 
 func (s *AuthService) Register(req *dto.RegisterRequest) (*dto.AuthenticationResponse, error) {
-	// Check user if exist
+	// Check if user already exists
 	var user models.User
-	if err := s.db.Where("email = ?", req.Email).First(&user).Error; err != nil {
+	if err := s.db.Where("email = ?", req.Email).First(&user).Error; err == nil {
+		return nil, errors.New("a user with this email already exists")
+	} else if !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
 
@@ -38,12 +40,12 @@ func (s *AuthService) Register(req *dto.RegisterRequest) (*dto.AuthenticationRes
 
 	// Create User
 	user = models.User{
-		Email:       req.Email,
-		Password:    hashedPassword,
-		FirstName:   req.FirstName,
-		LastName:    req.LastName,
-		PhoneNumber: req.Phone,
-		Role:        models.UserRoleCustomer,
+		Email:     req.Email,
+		Password:  hashedPassword,
+		FirstName: req.FirstName,
+		LastName:  req.LastName,
+		Phone:     req.Phone,
+		Role:      models.UserRoleCustomer,
 	}
 
 	if err := s.db.Create(&user).Error; err != nil {
@@ -115,7 +117,7 @@ func (s *AuthService) generateAuthResponse(user *models.User) (*dto.Authenticati
 			Email:     user.Email,
 			FirstName: user.FirstName,
 			LastName:  user.LastName,
-			Phone:     user.PhoneNumber,
+			Phone:     user.Phone,
 			Role:      string(user.Role),
 			IsActive:  user.IsActive,
 		},

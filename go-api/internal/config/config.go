@@ -57,7 +57,7 @@ type UploadConfig struct {
 func Load() (*Config, error) {
 	_ = godotenv.Load()
 	jwtEx, _ := time.ParseDuration(getEnv("JWT_TOKEN_EXPIRES_IN", "1h"))
-	jwtRe, _ := time.ParseDuration(getEnv("JWT_REFRESH_TOKEN_EXPIRES_IN", "7d"))
+	jwtRe, _ := time.ParseDuration(getEnv("JWT_REFRESH_TOKEN_EXPIRES_IN", "168h"))
 	uploadPath := getEnv("UPLOAD_PATH", "./uploads")
 	maxSize, _ := strconv.ParseInt(getEnv("UPLOAD_MAX_FILE_SIZE", "5242880"), 10, 64)
 	return &Config{
