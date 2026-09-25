@@ -11,12 +11,12 @@ type User struct {
 	Email    string `json:"email" gorm:"uniqueIndex;not null"`
 	Password string `json:"-" gorm:"not null"`
 
-	PhoneNumber string   `json:"phone_number" gorm:"uniqueIndex;not null"`
-	Address     string   `json:"address" gorm:"not null"`
-	IsActive    bool     `json:"is_active" gorm:"default:true"`
-	FirstName   string   `json:"first_name" gorm:"not null"`
-	LastName    string   `json:"last_name" gorm:"not null"`
-	Role        UserRole `json:"role" gorm:"default:'customer'"`
+	Phone     string   `json:"phone" gorm:"column:phone;uniqueIndex;not null"`
+	Address   string   `json:"address" gorm:"-"`
+	IsActive  bool     `json:"is_active" gorm:"default:true"`
+	FirstName string   `json:"first_name" gorm:"not null"`
+	LastName  string   `json:"last_name" gorm:"not null"`
+	Role      UserRole `json:"role" gorm:"default:'customer'"`
 
 	CreatedAt time.Time      `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt time.Time      `json:"updated_at" gorm:"autoUpdateTime"`
