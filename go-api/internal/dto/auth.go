@@ -13,7 +13,7 @@ type LoginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
-type RequestTockenRequest struct {
+type RequestTokenRequest struct {
 	RefreshToken string `json:"refresh_token" binding:"required"`
 }
 
@@ -24,7 +24,7 @@ type AuthenticationResponse struct {
 }
 
 type UserResponse struct {
-	ID        string `json:"id"`
+	ID        int    `json:"id"`
 	Email     string `json:"email"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
