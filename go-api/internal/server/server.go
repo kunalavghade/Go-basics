@@ -47,8 +47,25 @@ func (s *Server) SetupRoutes() *gin.Engine {
 		protected := api.Group("/")
 		protected.Use(s.authMiddleware())
 		{ // nolint:gocritic // Manage readbility
-			protected.GET("/profile", s.GetProfile)
-			protected.PUT("/profile", s.UpdateProfile)
+			// Users
+			users := protected.Group("/users")
+			users.GET("/profile", s.GetProfile)
+			users.PUT("/profile", s.UpdateProfile)
+
+			// Products
+			products := protected.Group("/products")
+			products.POST("/", s.CreateProductHandler())
+			products.GET("/", s.GetProductsHandler())
+			products.GET("/:id", s.GetProductByIDHandler())
+			products.PUT("/:id", s.UpdateProductHandler())
+			products.DELETE("/:id", s.DeleteProductHandler())
+
+			// Categories
+			categories := protected.Group("/categories")
+			categories.POST("/", s.CreateCategoryHandler())
+			categories.GET("/", s.GetCategoriesHandler())
+			categories.PUT("/:id", s.UpdateCategoryHandler())
+			categories.DELETE("/:id", s.DeleteCategoryHandler())
 		}
 
 	}
