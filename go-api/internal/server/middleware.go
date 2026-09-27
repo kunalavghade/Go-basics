@@ -43,6 +43,7 @@ func (s *Server) authMiddleware() gin.HandlerFunc {
 	}
 }
 
+// nolint:unused // Admin middleware is for future use
 func (s *Server) adminMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userRole, exists := c.Get("user_role")
