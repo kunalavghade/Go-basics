@@ -5,21 +5,28 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kunalavghade/Go-basics/go-api/internal/config"
+	"github.com/kunalavghade/Go-basics/go-api/internal/services"
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
 )
 
 type Server struct {
-	DB     *gorm.DB
-	log    *zerolog.Logger
-	config *config.Config
+	DB             *gorm.DB
+	log            *zerolog.Logger
+	config         *config.Config
+	authService    *services.AuthService
+	userService    *services.UserService
+	productService *services.ProductService
 }
 
 func NewServer(cfg *config.Config, log *zerolog.Logger, db *gorm.DB) *Server {
 	return &Server{
-		DB:     db,
-		log:    log,
-		config: cfg,
+		DB:             db,
+		log:            log,
+		config:         cfg,
+		authService:    services.NewAuthService(db, cfg),
+		userService:    services.NewUserService(db),
+		productService: services.NewProductService(db),
 	}
 }
 
