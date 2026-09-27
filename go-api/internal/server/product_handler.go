@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kunalavghade/Go-basics/go-api/internal/dto"
-	"github.com/kunalavghade/Go-basics/go-api/internal/services"
 )
 
 func (s *Server) CreateProductHandler() gin.HandlerFunc {
@@ -16,8 +15,7 @@ func (s *Server) CreateProductHandler() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		productService := services.NewProductService(s.DB)
-		product, err := productService.CreateProduct(&req)
+		product, err := s.productService.CreateProduct(&req)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -30,8 +28,7 @@ func (s *Server) GetProductsHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 		limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
-		productService := services.NewProductService(s.DB)
-		products, paginationMeta := productService.GetProducts(page, limit)
+		products, paginationMeta := s.productService.GetProducts(page, limit)
 		if products == nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch products"})
 			return
@@ -43,8 +40,7 @@ func (s *Server) GetProductsHandler() gin.HandlerFunc {
 func (s *Server) GetProductByIDHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("id"))
-		productService := services.NewProductService(s.DB)
-		product, err := productService.GetProduct(id)
+		product, err := s.productService.GetProduct(id)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -61,8 +57,7 @@ func (s *Server) UpdateProductHandler() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		productService := services.NewProductService(s.DB)
-		product, err := productService.UpdateProduct(id, &req)
+		product, err := s.productService.UpdateProduct(id, &req)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -74,8 +69,7 @@ func (s *Server) UpdateProductHandler() gin.HandlerFunc {
 func (s *Server) DeleteProductHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("id"))
-		productService := services.NewProductService(s.DB)
-		if err := productService.DeleteProduct(id); err != nil {
+		if err := s.productService.DeleteProduct(id); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -90,8 +84,7 @@ func (s *Server) CreateCategoryHandler() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		productService := services.NewProductService(s.DB)
-		category, err := productService.CreateCategory(&req)
+		category, err := s.productService.CreateCategory(&req)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -102,8 +95,7 @@ func (s *Server) CreateCategoryHandler() gin.HandlerFunc {
 
 func (s *Server) GetCategoriesHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		productService := services.NewProductService(s.DB)
-		categories, err := productService.GetGategories()
+		categories, err := s.productService.GetGategories()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -120,8 +112,7 @@ func (s *Server) UpdateCategoryHandler() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		productService := services.NewProductService(s.DB)
-		category, err := productService.UpdateCategory(id, &req)
+		category, err := s.productService.UpdateCategory(id, &req)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -133,8 +124,7 @@ func (s *Server) UpdateCategoryHandler() gin.HandlerFunc {
 func (s *Server) DeleteCategoryHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("id"))
-		productService := services.NewProductService(s.DB)
-		if err := productService.DeleteCategory(id); err != nil {
+		if err := s.productService.DeleteCategory(id); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
