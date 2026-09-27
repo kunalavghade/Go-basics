@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kunalavghade/Go-basics/go-api/internal/config"
+	"github.com/kunalavghade/Go-basics/go-api/internal/providers"
 	"github.com/kunalavghade/Go-basics/go-api/internal/services"
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
@@ -17,9 +18,11 @@ type Server struct {
 	authService    *services.AuthService
 	userService    *services.UserService
 	productService *services.ProductService
+	uploadService  *services.UploadService
 }
 
 func NewServer(cfg *config.Config, log *zerolog.Logger, db *gorm.DB) *Server {
+	uploadProvider := providers.NewLocalUploadProvider(cfg.Upload.Path)
 	return &Server{
 		DB:             db,
 		log:            log,
@@ -27,6 +30,7 @@ func NewServer(cfg *config.Config, log *zerolog.Logger, db *gorm.DB) *Server {
 		authService:    services.NewAuthService(db, cfg),
 		userService:    services.NewUserService(db),
 		productService: services.NewProductService(db),
+		uploadService:  services.NewUploadService(uploadProvider),
 	}
 }
 
