@@ -7,13 +7,13 @@ import (
 )
 
 type Category struct {
-	ID       int    `json:"id" gorm:"primaryKey"`
-	Name     string `json:"name" gorm:"not null;uniqueIndex"`
-	IsActive bool   `json:"is_active" gorm:"default:true"`
-
-	CreatedAt time.Time      `json:"created_at" gorm:"autoCreateTime"`
-	UpdatedAt time.Time      `json:"updated_at" gorm:"autoUpdateTime"`
-	DeletedAt gorm.DeletedAt `json:"-"`
+	ID          int            `json:"id" gorm:"primaryKey"`
+	Name        string         `json:"name" gorm:"not null;uniqueIndex"`
+	IsActive    bool           `json:"is_active" gorm:"default:true"`
+	Description string         `json:"description" gorm:"not null"`
+	CreatedAt   time.Time      `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt   time.Time      `json:"updated_at" gorm:"autoUpdateTime"`
+	DeletedAt   gorm.DeletedAt `json:"-"`
 
 	// Relationships
 	Products []Product `json:"-" gorm:"foreignKey:CategoryID;references:Id"`
@@ -26,6 +26,7 @@ type Product struct {
 	Price       float64 `json:"price" gorm:"not null"`
 	Stock       int     `json:"stock" gorm:"not null"`
 	CategoryID  int     `json:"category_id" gorm:"not null;index"`
+	SKU         string  `json:"sku" gorm:"column:sku"`
 
 	CreatedAt time.Time      `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt time.Time      `json:"updated_at" gorm:"autoUpdateTime"`
