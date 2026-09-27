@@ -37,7 +37,8 @@ func (s *ProductService) GetGategories() ([]dto.CategoryResponse, error) {
 		return nil, err
 	}
 	categoryResponses := make([]dto.CategoryResponse, len(categories))
-	for i, category := range categories {
+	for i := range categories {
+		category := &categories[i]
 		categoryResponses[i] = dto.CategoryResponse{
 			ID:          category.ID,
 			Name:        category.Name,
@@ -170,7 +171,8 @@ func (s *ProductService) DeleteProduct(id int) error {
 
 func (s *ProductService) convertToProductResponse(product *models.Product) *dto.ProductResponse {
 	images := make([]dto.ProductImageResponse, len(product.Images))
-	for i, image := range product.Images {
+	for i := range product.Images {
+		image := &product.Images[i]
 		images[i] = dto.ProductImageResponse{
 			ID:        image.ID,
 			ProductID: image.ProductID,

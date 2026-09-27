@@ -68,7 +68,7 @@ func (s *AuthService) Login(req *dto.LoginRequest) (*dto.AuthenticationResponse,
 		return nil, err
 	}
 	if err := utils.CheckPassword(req.Password, user.Password); err != nil {
-		return nil, errors.New("Invalid Credentials")
+		return nil, errors.New("invalid credentials")
 	}
 	return s.generateAuthResponse(&user)
 }
@@ -76,7 +76,7 @@ func (s *AuthService) Login(req *dto.LoginRequest) (*dto.AuthenticationResponse,
 func (s *AuthService) RefreshToken(req *dto.RequestTokenRequest) (*dto.AuthenticationResponse, error) {
 	claims, err := utils.ValidateToken(req.RefreshToken, s.config.JWT.Secret)
 	if err != nil {
-		return nil, errors.New("Invalid Refresh Token")
+		return nil, errors.New("invalid refresh token")
 	}
 	var refreshToken models.RefreshToken
 	if err := s.db.Where("token = ? AND expires_at > ?", req.RefreshToken, time.Now()).First(&refreshToken).Error; err != nil {
