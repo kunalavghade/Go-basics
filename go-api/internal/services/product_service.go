@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+
 	"github.com/kunalavghade/Go-basics/go-api/internal/dto"
 	"github.com/kunalavghade/Go-basics/go-api/internal/models"
 	"github.com/kunalavghade/Go-basics/go-api/internal/utils"
@@ -195,4 +197,27 @@ func (s *ProductService) convertToProductResponse(product *models.Product) *dto.
 			IsActive:    product.Category.IsActive,
 		},
 	}
+}
+
+func (s *ProductService) AddProductImage(productID int, url, altText string) error {
+	// 1. Verify the product actually exists
+	var product models.Product
+	if err := s.db.Where("id = ?", productID).First(&product).Error; err != nil {
+		return errors.New("product not found")
+	}
+
+	// 2. Check how many images this product already has
+	var count int64
+	s.db.Model(&models.ProductImage{}).Where("product_id = ?", productID).Count(&count)
+
+	if err := s.db.Create(&models.ProductImage{
+		ProductID: productID,
+		ImageURL:  url,
+		AltText:   altText,
+		IsPrimary: count == 0,
+	}).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

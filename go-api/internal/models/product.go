@@ -40,10 +40,11 @@ type Product struct {
 }
 
 type ProductImage struct {
-	ID        int    `json:"id" gorm:"primaryKey"`
-	ProductID int    `json:"product_id" gorm:"not null;index"`
-	ImageURL  string `json:"image_url" gorm:"not null"`
-
+	ID        int            `json:"id" gorm:"primaryKey"`
+	ProductID int            `json:"product_id" gorm:"not null;index"`
+	ImageURL  string         `json:"image_url" gorm:"column:url;not null"`
+	AltText   string         `json:"alt_text" gorm:"not null"`
+	IsPrimary bool           `json:"is_primary" gorm:"default:false"`
 	CreatedAt time.Time      `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt time.Time      `json:"updated_at" gorm:"autoUpdateTime"`
 	DeletedAt gorm.DeletedAt `json:"-"`
