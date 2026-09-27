@@ -61,18 +61,19 @@ func (s *Server) SetupRoutes() *gin.Engine {
 
 			// Products
 			products := protected.Group("/products")
-			products.POST("/", s.CreateProductHandler())
-			products.GET("/", s.GetProductsHandler())
-			products.GET("/:id", s.GetProductByIDHandler())
-			products.PUT("/:id", s.UpdateProductHandler())
-			products.DELETE("/:id", s.DeleteProductHandler())
+			products.POST("/", s.CreateProductHandler)
+			products.GET("/", s.GetProductsHandler)
+			products.GET("/:id", s.GetProductByIDHandler)
+			products.PUT("/:id", s.UpdateProductHandler)
+			products.DELETE("/:id", s.DeleteProductHandler)
+			products.POST("/:id/image", s.UploadProductImageHandler)
 
 			// Categories
 			categories := protected.Group("/categories")
-			categories.POST("/", s.CreateCategoryHandler())
-			categories.GET("/", s.GetCategoriesHandler())
-			categories.PUT("/:id", s.UpdateCategoryHandler())
-			categories.DELETE("/:id", s.DeleteCategoryHandler())
+			categories.POST("/", s.CreateCategoryHandler)
+			categories.GET("/", s.GetCategoriesHandler)
+			categories.PUT("/:id", s.UpdateCategoryHandler)
+			categories.DELETE("/:id", s.DeleteCategoryHandler)
 		}
 
 	}
