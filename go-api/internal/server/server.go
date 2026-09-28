@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kunalavghade/Go-basics/go-api/internal/config"
+	"github.com/kunalavghade/Go-basics/go-api/internal/interfaces"
 	"github.com/kunalavghade/Go-basics/go-api/internal/providers"
 	"github.com/kunalavghade/Go-basics/go-api/internal/services"
 	"github.com/rs/zerolog"
@@ -22,7 +23,12 @@ type Server struct {
 }
 
 func NewServer(cfg *config.Config, log *zerolog.Logger, db *gorm.DB) *Server {
-	uploadProvider := providers.NewLocalUploadProvider(cfg.Upload.Path)
+	var uploadProvider interfaces.UploadProvider
+	if cfg.Upload.Provider == "aws" {
+		uploadProvider = providers.NewS3Provider(cfg)
+	} else {
+		uploadProvider = providers.NewLocalUploadProvider(cfg.Upload.Path)
+	}
 	return &Server{
 		DB:             db,
 		log:            log,
