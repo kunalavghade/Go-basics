@@ -14,6 +14,7 @@ type Config struct {
 	JWT      JWTConfig
 	AWS      AWSConfig
 	Upload   UploadConfig
+	Event    EventConfig
 	Logger   LoggerConfig
 }
 
@@ -47,12 +48,18 @@ type AWSConfig struct {
 	SecretAccessKey string
 	S3Bucket        string
 	S3Endpoint      string
+	EventQueue      string
 }
 
 type UploadConfig struct {
 	Path        string
 	MaxFileSize int64 // bytes
 	Provider    string
+}
+
+type EventConfig struct {
+	Provider string
+	Queue    string
 }
 
 func Load() (*Config, error) {
@@ -85,11 +92,16 @@ func Load() (*Config, error) {
 			SecretAccessKey: getEnv("AWS_SECRET_ACCESS_KEY", ""),
 			S3Bucket:        getEnv("AWS_S3_BUCKET", ""),
 			S3Endpoint:      getEnv("AWS_S3_ENDPOINT", ""),
+			EventQueue:      getEnv("AWS_EVENT_QUEUE", ""),
 		},
 		Upload: UploadConfig{
 			Path:        uploadPath,
 			MaxFileSize: maxSize,
 			Provider:    getEnv("UPLOAD_PROVIDER", "s3"),
+		},
+		Event: EventConfig{
+			Provider: getEnv("EVENT_PROVIDER", "sqs"),
+			Queue:    getEnv("AWS_EVENT_QUEUE", "task-queue"),
 		},
 		Logger: LoggerConfig{
 			Level: getEnv("LOG_LEVEL", "info"),

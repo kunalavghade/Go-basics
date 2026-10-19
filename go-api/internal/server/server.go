@@ -17,6 +17,7 @@ type Server struct {
 	DB             *gorm.DB
 	log            *zerolog.Logger
 	config         *config.Config
+	eventPublisher interfaces.EventPublisher
 	authService    *services.AuthService
 	userService    *services.UserService
 	productService *services.ProductService
@@ -32,16 +33,27 @@ func NewServer(cfg *config.Config, log *zerolog.Logger, db *gorm.DB) *Server {
 	} else {
 		uploadProvider = providers.NewLocalUploadProvider(cfg.Upload.Path)
 	}
+
+	var eventPublisher interfaces.EventPublisher
+	eventPublisher, err := providers.NewEventPublisher(cfg)
+	if err != nil {
+		log.Warn().Err(err).Msg("Failed to initialize event publisher, falling back to NoopEventPublisher")
+		eventPublisher = providers.NewNoopEventPublisher()
+	} else {
+		log.Info().Str("provider", cfg.Event.Provider).Msg("Successfully initialized event publisher")
+	}
+
 	return &Server{
 		DB:             db,
 		log:            log,
 		config:         cfg,
-		authService:    services.NewAuthService(db, cfg),
+		eventPublisher: eventPublisher,
+		authService:    services.NewAuthService(db, cfg, eventPublisher),
 		userService:    services.NewUserService(db),
 		productService: services.NewProductService(db),
 		uploadService:  services.NewUploadService(uploadProvider),
 		cartService:    services.NewCartService(db),
-		orderService:   services.NewOrderService(db),
+		orderService:   services.NewOrderService(db, eventPublisher),
 	}
 }
 

@@ -2,18 +2,25 @@ package services
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/kunalavghade/Go-basics/go-api/internal/dto"
+	"github.com/kunalavghade/Go-basics/go-api/internal/interfaces"
 	"github.com/kunalavghade/Go-basics/go-api/internal/models"
+	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
 )
 
 type OrderService struct {
-	db *gorm.DB
+	db        *gorm.DB
+	publisher interfaces.EventPublisher
 }
 
-func NewOrderService(db *gorm.DB) *OrderService {
-	return &OrderService{db: db}
+func NewOrderService(db *gorm.DB, publisher interfaces.EventPublisher) *OrderService {
+	return &OrderService{
+		db:        db,
+		publisher: publisher,
+	}
 }
 
 func (os *OrderService) CreateOrder(userID int) (*dto.OrderResponse, error) {
@@ -100,6 +107,18 @@ func (os *OrderService) CreateOrder(userID int) (*dto.OrderResponse, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	if os.publisher != nil {
+		metadata := map[string]string{
+			"user_id":  strconv.Itoa(userID),
+			"order_id": strconv.Itoa(orderResponse.ID),
+		}
+		if pubErr := os.publisher.Publish("order.created", orderResponse, metadata); pubErr != nil {
+			log.Warn().Err(pubErr).Int("order_id", orderResponse.ID).Msg("Failed to publish order.created event to SQS")
+		} else {
+			log.Info().Int("order_id", orderResponse.ID).Msg("Successfully published order.created event to SQS")
+		}
 	}
 
 	return orderResponse, nil

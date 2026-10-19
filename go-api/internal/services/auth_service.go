@@ -2,24 +2,29 @@ package services
 
 import (
 	"errors"
+	"strconv"
 	"time"
 
 	"github.com/kunalavghade/Go-basics/go-api/internal/config"
 	"github.com/kunalavghade/Go-basics/go-api/internal/dto"
+	"github.com/kunalavghade/Go-basics/go-api/internal/interfaces"
 	"github.com/kunalavghade/Go-basics/go-api/internal/models"
 	"github.com/kunalavghade/Go-basics/go-api/internal/utils"
+	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
 )
 
 type AuthService struct {
-	db     *gorm.DB
-	config *config.Config
+	db        *gorm.DB
+	config    *config.Config
+	publisher interfaces.EventPublisher
 }
 
-func NewAuthService(db *gorm.DB, cfg *config.Config) *AuthService {
+func NewAuthService(db *gorm.DB, cfg *config.Config, publisher interfaces.EventPublisher) *AuthService {
 	return &AuthService{
-		db:     db,
-		config: cfg,
+		db:        db,
+		config:    cfg,
+		publisher: publisher,
 	}
 }
 
@@ -70,7 +75,34 @@ func (s *AuthService) Login(req *dto.LoginRequest) (*dto.AuthenticationResponse,
 	if err := utils.CheckPassword(req.Password, user.Password); err != nil {
 		return nil, errors.New("invalid credentials")
 	}
-	return s.generateAuthResponse(&user)
+
+	authResp, err := s.generateAuthResponse(&user)
+	if err != nil {
+		return nil, err
+	}
+
+	if s.publisher != nil {
+		metadata := map[string]string{
+			"user_id": strconv.Itoa(user.ID),
+			"email":   user.Email,
+			"role":    string(user.Role),
+		}
+		eventPayload := map[string]interface{}{
+			"user_id":    user.ID,
+			"email":      user.Email,
+			"first_name": user.FirstName,
+			"last_name":  user.LastName,
+			"role":       string(user.Role),
+			"login_at":   time.Now().UTC(),
+		}
+		if pubErr := s.publisher.Publish("user.login", eventPayload, metadata); pubErr != nil {
+			log.Warn().Err(pubErr).Int("user_id", user.ID).Msg("Failed to publish user.login event to SQS")
+		} else {
+			log.Info().Int("user_id", user.ID).Msg("Successfully published user.login event to SQS")
+		}
+	}
+
+	return authResp, nil
 }
 
 func (s *AuthService) RefreshToken(req *dto.RequestTokenRequest) (*dto.AuthenticationResponse, error) {
