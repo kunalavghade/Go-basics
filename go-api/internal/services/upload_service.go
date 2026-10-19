@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/google/uuid"
 	"github.com/kunalavghade/Go-basics/go-api/internal/interfaces"
 )
 
@@ -26,7 +27,8 @@ func (s *UploadService) UploadProductImage(productId int, file *multipart.FileHe
 	if file.Size > 5*1024*1024 {
 		return "", errors.New("file size exceeds limit")
 	}
-	path := fmt.Sprintf("products/%d/%s", productId, file.Filename)
+	newFileName := uuid.New().String()
+	path := fmt.Sprintf("products/%d/%s%s", productId, newFileName, ext)
 
 	if _, err := s.provider.UploadFile(file, path); err != nil {
 		return "", err
