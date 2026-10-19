@@ -17,6 +17,15 @@ import (
 	"github.com/kunalavghade/Go-basics/go-api/internal/server"
 )
 
+// @title           Go Basics E-Commerce API
+// @version         1.0
+// @description     RESTful API for E-Commerce platform with Authentication, Products, Categories, Cart, and Orders management.
+// @host            localhost:8081
+// @BasePath        /
+// @securityDefinitions.apikey BearerAuth
+// @in              header
+// @name            Authorization
+// @description     Type "Bearer" followed by a space and JWT token.
 func main() {
 	fmt.Println("Hello World")
 	log := logger.New("debug")

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kunalavghade/Go-basics/go-api/docs"
 	"github.com/kunalavghade/Go-basics/go-api/internal/config"
 	"github.com/kunalavghade/Go-basics/go-api/internal/interfaces"
 	"github.com/kunalavghade/Go-basics/go-api/internal/providers"
@@ -54,6 +55,19 @@ func (s *Server) SetupRoutes() *gin.Engine {
 
 	// Add Routes
 	router.GET("/health", s.HealthCheck)
+
+	// API Documentation (RapiDoc & Swagger UI)
+	router.GET("/docs/swagger.json", func(c *gin.Context) {
+		c.Data(http.StatusOK, "application/json; charset=utf-8", docs.SwaggerJSON)
+	})
+	router.GET("/docs", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.String(http.StatusOK, docs.RapiDocHTML)
+	})
+	router.GET("/swagger", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.String(http.StatusOK, docs.SwaggerUIHTML)
+	})
 
 	api := router.Group("/api")
 	{
