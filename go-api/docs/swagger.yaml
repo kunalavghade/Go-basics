@@ -1,0 +1,989 @@
+basePath: /
+definitions:
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.AddToCartRequest:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    required:
+    - product_id
+    - quantity
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.AuthenticationResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.UserResponse'
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.CartItemResponse:
+    properties:
+      id:
+        type: integer
+      product:
+        $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.ProductResponse'
+      quantity:
+        type: integer
+      sub_total:
+        type: number
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.CartResponse:
+    properties:
+      cart_item:
+        items:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CartItemResponse'
+        type: array
+      id:
+        type: integer
+      total:
+        type: number
+      user_id:
+        type: integer
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.CategoryResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.CreateCategoryRequest:
+    properties:
+      description:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.CreateProductRequest:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      sku:
+        type: string
+      stock:
+        type: integer
+    required:
+    - category_id
+    - description
+    - name
+    - price
+    - sku
+    - stock
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.OrderItemResponse:
+    properties:
+      id:
+        type: integer
+      price:
+        type: number
+      product:
+        $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.ProductResponse'
+      quantity:
+        type: integer
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.OrderResponse:
+    properties:
+      id:
+        type: integer
+      order_items:
+        items:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.OrderItemResponse'
+        type: array
+      status:
+        type: string
+      total_amount:
+        type: number
+      user_id:
+        type: integer
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.ProductImageResponse:
+    properties:
+      id:
+        type: integer
+      image_url:
+        type: string
+      product_id:
+        type: integer
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.ProductResponse:
+    properties:
+      category:
+        $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CategoryResponse'
+      category_id:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      images:
+        items:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.ProductImageResponse'
+        type: array
+      name:
+        type: string
+      price:
+        type: number
+      sku:
+        type: string
+      stock:
+        type: integer
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.RegisterRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.RemoveFromCartRequest:
+    properties:
+      product_id:
+        type: integer
+    required:
+    - product_id
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.RequestTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.UpdateCartRequest:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    required:
+    - product_id
+    - quantity
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.UpdateCategoryRequest:
+    properties:
+      description:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.UpdateProductRequest:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      sku:
+        type: string
+      stock:
+        type: integer
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.UpdateProfileRequest:
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_dto.UserResponse:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      last_name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    type: object
+  github_com_kunalavghade_Go-basics_go-api_internal_utils.Response:
+    properties:
+      data: {}
+      error:
+        type: string
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+host: localhost:8081
+info:
+  contact: {}
+  description: RESTful API for E-Commerce platform with Authentication, Products,
+    Categories, Cart, and Orders management.
+  title: Go Basics E-Commerce API
+  version: "1.0"
+paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return access & refresh tokens
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.AuthenticationResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      summary: Login user
+      tags:
+      - Auth
+  /api/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Invalidate the user refresh token
+      parameters:
+      - description: Refresh Token
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.RequestTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      summary: Logout user
+      tags:
+      - Auth
+  /api/auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Obtain a new access token using a refresh token
+      parameters:
+      - description: Refresh Token
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.RequestTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      summary: Refresh access token
+      tags:
+      - Auth
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with email, password, and personal details
+      parameters:
+      - description: User Registration Info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.AuthenticationResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      summary: Register a new user
+      tags:
+      - Auth
+  /api/cart/:
+    get:
+      description: Retrieve cart contents and total for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CartResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get user cart
+      tags:
+      - Cart
+  /api/cart/add:
+    post:
+      consumes:
+      - application/json
+      description: Add product to cart or increase quantity
+      parameters:
+      - description: Cart Item Info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.AddToCartRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CartResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Add item to cart
+      tags:
+      - Cart
+  /api/cart/remove:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a product from the user cart
+      parameters:
+      - description: Product ID (query)
+        in: query
+        name: product_id
+        type: integer
+      - description: Product ID (JSON body)
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.RemoveFromCartRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CartResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Remove item from cart
+      tags:
+      - Cart
+  /api/cart/update:
+    put:
+      consumes:
+      - application/json
+      description: Update quantity of item in cart (quantity <= 0 deletes item)
+      parameters:
+      - description: Update Cart Item Info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.UpdateCartRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CartResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Update cart item
+      tags:
+      - Cart
+  /api/categories/:
+    get:
+      description: Get all categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CategoryResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: List categories
+      tags:
+      - Categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new product category
+      parameters:
+      - description: Category info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CategoryResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Create category
+      tags:
+      - Categories
+  /api/categories/{id}:
+    delete:
+      description: Remove a category by ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete category
+      tags:
+      - Categories
+    put:
+      consumes:
+      - application/json
+      description: Update an existing category by ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Category data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.UpdateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CategoryResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Update category
+      tags:
+      - Categories
+  /api/orders/:
+    get:
+      description: Fetch all orders placed by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.OrderResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: List user orders
+      tags:
+      - Orders
+    post:
+      description: Create an order from the user's cart, deduct stock, and empty cart
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.OrderResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Checkout & create order
+      tags:
+      - Orders
+  /api/orders/{id}:
+    get:
+      description: Fetch order details including ordered items and product info
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.OrderResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get order by ID
+      tags:
+      - Orders
+  /api/products/:
+    get:
+      description: Get paginated list of products
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: List products
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Create a new product with category, price, and stock
+      parameters:
+      - description: Product info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.ProductResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Create product
+      tags:
+      - Products
+  /api/products/{id}:
+    delete:
+      description: Remove a product by ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete product
+      tags:
+      - Products
+    get:
+      description: Fetch details of a single product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.ProductResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get product by ID
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Update an existing product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.UpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.ProductResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Update product
+      tags:
+      - Products
+  /api/products/{id}/image:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload an image for a specific product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Image file
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Upload product image
+      tags:
+      - Products
+  /api/users/profile:
+    get:
+      description: Get profile of the currently authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.UserResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Get user profile
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Update profile details of the currently authenticated user
+      parameters:
+      - description: Profile details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_dto.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_kunalavghade_Go-basics_go-api_internal_utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Update user profile
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

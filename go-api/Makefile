@@ -1,4 +1,4 @@
-.PHONY: help build run dev lint migrate-up migrate-down format
+.PHONY: help build run dev lint migrate-up migrate-down format doc swagger
 
 help:
 	@echo "Available commands:"
@@ -7,6 +7,7 @@ help:
 	echo "dev - Run the application in development mode"
 	echo "lint - Lint the application"
 	echo "format - Format the application"
+	echo "doc - Generate Swagger/OpenAPI documentation"
 	echo "migrate-up - Apply database migrations"
 	echo "migrate-down - Rollback database migrations"
 
@@ -30,6 +31,15 @@ format:
 	@gofmt -l -w .
 	@$(shell go env GOPATH)/bin/goimports -w .
 
+doc:
+	@which swag > /dev/null 2>&1 || [ -f $(shell go env GOPATH)/bin/swag ] || (echo "Installing swag..." && go install github.com/swaggo/swag/cmd/swag@latest)
+	@if which swag > /dev/null 2>&1; then \
+		swag init -g cmd/api/main.go -o docs --parseDependency --parseInternal ; \
+	else \
+		$(shell go env GOPATH)/bin/swag init -g cmd/api/main.go -o docs --parseDependency --parseInternal ; \
+	fi
+
+swagger: doc
 
 migrate-up:
 	$(shell go env GOPATH)/bin/migrate -path db/migrations -database "postgresql://postgres:postgres@localhost:5439/postgres?sslmode=disable" up
