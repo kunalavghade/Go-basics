@@ -15,9 +15,14 @@ help:
 build:
 	go build -o bin/app ./cmd/api
 
+build-consumer:
+	go build -o bin/consumer ./cmd/consumer
 
 run:
 	go run ./cmd/api
+
+run-consumer:
+	go run ./cmd/consumer
 
 
 dev:
@@ -47,6 +52,9 @@ migrate-up:
 migrate-down:
 	$(shell go env GOPATH)/bin/migrate -path db/migrations -database "postgresql://postgres:postgres@localhost:5439/postgres?sslmode=disable" down
 
+
+docker-build:
+	docker compose -f docker/docker-compose.yml build
 
 docker-up:
 	docker compose -f docker/docker-compose.yml up

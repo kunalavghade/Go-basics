@@ -29,6 +29,7 @@ services:
 
   cdn:
     image: nginx:alpine
+    container_name: "cdn"
     ports:
       - "8082:80"
     volumes:
@@ -36,6 +37,72 @@ services:
       - ../uploads:/var/www/uploads
     depends_on:
       - localstacks3
+    networks:
+      - golang_api_network
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: "mailhog"
+    ports:
+      - "1025:1025" # SMTP port
+      - "8025:8025" # Web UI
+    networks:
+      - golang_api_network
+
+  consumer:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.consumer
+    container_name: "email_consumer"
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_S3_ENDPOINT=http://localstacks3:4566
+      - AWS_EVENT_QUEUE=task-queue
+      - SMTP_HOST=mailhog
+      - SMTP_PORT=1025
+      - FROM_EMAIL=noreply@ecommerce.local
+    depends_on:
+      - localstacks3
+      - mailhog
+    networks:
+      - golang_api_network
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    container_name: "go_api"
+    ports:
+      - "8081:8081"
+    environment:
+      - SERVER_PORT=8081
+      - GIN_MODE=release
+      - DB_HOST=postgress
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+      - DB_SSL_MODE=disable
+      - JWT_SECRET=aljdhladhasldaslkd
+      - JWT_TOKEN_EXPIRES_IN=24h
+      - JWT_REFRESH_TOKEN_EXPIRES_IN=72h
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_S3_BUCKET=ecommerse-upload
+      - AWS_S3_ENDPOINT=http://localstacks3:4566
+      - AWS_EVENT_QUEUE=task-queue
+      - EVENT_PROVIDER=sqs
+      - UPLOAD_PATH=./uploads
+      - UPLOAD_PROVIDER=s3
+    depends_on:
+      - postgress
+      - localstacks3
+    volumes:
+      - ../uploads:/app/uploads
     networks:
       - golang_api_network
 

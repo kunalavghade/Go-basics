@@ -1,6 +1,6 @@
 module github.com/kunalavghade/Go-basics/go-api
 
-go 1.26.3
+go 1.25.0
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.47.3
