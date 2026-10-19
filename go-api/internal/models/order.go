@@ -72,3 +72,7 @@ type CartItem struct {
 	Cart    Cart    `json:"-" gorm:"foreignKey:CartID;references:Id"`
 	Product Product `json:"-" gorm:"foreignKey:ProductID;references:Id"`
 }
+
+func (CartItem) TableName() string {
+	return "cart_items"
+}

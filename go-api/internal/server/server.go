@@ -20,6 +20,7 @@ type Server struct {
 	userService    *services.UserService
 	productService *services.ProductService
 	uploadService  *services.UploadService
+	cartService    *services.CartService
 }
 
 func NewServer(cfg *config.Config, log *zerolog.Logger, db *gorm.DB) *Server {
@@ -37,6 +38,7 @@ func NewServer(cfg *config.Config, log *zerolog.Logger, db *gorm.DB) *Server {
 		userService:    services.NewUserService(db),
 		productService: services.NewProductService(db),
 		uploadService:  services.NewUploadService(uploadProvider),
+		cartService:    services.NewCartService(db),
 	}
 }
 
@@ -84,6 +86,15 @@ func (s *Server) SetupRoutes() *gin.Engine {
 			categories.GET("/", s.GetCategoriesHandler)
 			categories.PUT("/:id", s.UpdateCategoryHandler)
 			categories.DELETE("/:id", s.DeleteCategoryHandler)
+
+			// Cart
+			cart := protected.Group("/cart")
+			{
+				cart.POST("/add", s.AddToCartHandler)
+				cart.GET("/", s.GetCartHandler)
+				cart.PUT("/update", s.UpdateCartHandler)
+				cart.DELETE("/remove", s.RemoveFromCartHandler)
+			}
 		}
 
 	}

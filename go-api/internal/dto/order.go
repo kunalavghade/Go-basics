@@ -6,7 +6,12 @@ type AddToCartRequest struct {
 }
 
 type UpdateCartRequest struct {
-	Quantity int `json:"quantity" binding:"required"`
+	ProductID int `json:"product_id" binding:"required"`
+	Quantity  int `json:"quantity" binding:"required"`
+}
+
+type RemoveFromCartRequest struct {
+	ProductID int `json:"product_id" form:"product_id" binding:"required"`
 }
 
 type CartResponse struct {
