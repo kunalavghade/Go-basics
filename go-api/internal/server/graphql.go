@@ -2,7 +2,9 @@ package server
 
 import (
 	"context"
+	"strings"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/handler/lru"
@@ -11,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kunalavghade/Go-basics/go-api/graph"
 	"github.com/kunalavghade/Go-basics/go-api/graph/resolver"
+	"github.com/kunalavghade/Go-basics/go-api/internal/utils"
 	"github.com/vektah/gqlparser/v2/ast"
 )
 
@@ -23,11 +26,19 @@ func (s *Server) createGQLHandler() *handler.Server {
 		s.orderService,
 	)
 
-	schema := graph.NewExecutableSchema(
-		graph.Config{
-			Resolvers: rvr,
-		},
-	)
+	cfg := graph.Config{
+		Resolvers: rvr,
+	}
+
+	// @auth directive handler: checks if user is authenticated for protected fields
+	cfg.Directives.Auth = func(ctx context.Context, obj any, next graphql.Resolver) (res any, err error) {
+		if _, err := resolver.GetUserIDByContext(ctx); err != nil {
+			return nil, resolver.ErrUnauthorized
+		}
+		return next(ctx)
+	}
+
+	schema := graph.NewExecutableSchema(cfg)
 	srv := handler.New(schema)
 	srv.AddTransport(transport.Options{})
 	srv.AddTransport(transport.GET{})
@@ -42,36 +53,48 @@ func (s *Server) createGQLHandler() *handler.Server {
 	return srv
 }
 
-func (s *Server) GraphQLHandler() gin.HandlerFunc {
-	h := s.createGQLHandler()
+// GraphQLAuthMiddleware optionally extracts JWT authentication claims without blocking unauthenticated requests
+func (s *Server) GraphQLAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ctx := c.Request.Context()
-		for k, v := range c.Keys {
-			ctx = context.WithValue(ctx, k, v)
+		authorization := c.GetHeader("Authorization")
+		if authorization != "" {
+			tokenParts := strings.Split(authorization, " ")
+			if len(tokenParts) == 2 && tokenParts[0] == "Bearer" {
+				claims, err := utils.ValidateToken(tokenParts[1], s.config.JWT.Secret)
+				if err == nil {
+					c.Set("user_id", claims.UserID)
+					c.Set("user_role", claims.Role)
+					c.Set("user_email", claims.Email)
+				}
+			}
 		}
-		h.ServeHTTP(c.Writer, c.Request.WithContext(ctx))
+
+		ctx := c.Request.Context()
+		if userID, exists := c.Get("user_id"); exists {
+			ctx = context.WithValue(ctx, "user_id", userID)
+		}
+		if userRole, exists := c.Get("user_role"); exists {
+			ctx = context.WithValue(ctx, "user_role", userRole)
+		}
+		if userEmail, exists := c.Get("user_email"); exists {
+			ctx = context.WithValue(ctx, "user_email", userEmail)
+		}
+		c.Request = c.Request.WithContext(ctx)
+
+		c.Next()
 	}
 }
 
-func (s *Server) PlaygroundHandler() gin.HandlerFunc {
-	h := playground.Handler("GraphQL Playground", "/query")
+func (s *Server) GraphQLHandler() gin.HandlerFunc {
+	h := s.createGQLHandler()
 	return func(c *gin.Context) {
 		h.ServeHTTP(c.Writer, c.Request)
 	}
 }
 
-func (s *Server) GraphQLMiddleware() gin.HandlerFunc {
+func (s *Server) PlaygroundHandler() gin.HandlerFunc {
+	h := playground.Handler("GraphQL Playground", "/graphql")
 	return func(c *gin.Context) {
-
-		userID, _ := c.Get("user_id")
-		userEamil, _ := c.Get("user_email")
-		userRole, _ := c.Get("user_role")
-
-		ctx := context.WithValue(c.Request.Context(), "user_id", userID)
-		ctx = context.WithValue(ctx, "user_email", userEamil)
-		ctx = context.WithValue(ctx, "user_role", userRole)
-		c.Request = c.Request.WithContext(ctx)
-
-		c.Next()
+		h.ServeHTTP(c.Writer, c.Request)
 	}
 }

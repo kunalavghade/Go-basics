@@ -34,6 +34,7 @@ type ResolverRoot interface {
 }
 
 type DirectiveRoot struct {
+	Auth func(ctx context.Context, obj any, next graphql.Resolver) (res any, err error)
 }
 
 type ComplexityRoot struct {
@@ -1922,7 +1923,20 @@ func (ec *executionContext) _Mutation_logout(ctx context.Context, field graphql.
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().Logout(ctx, fc.Args["refreshToken"].(string))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal bool
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v bool) graphql.Marshaler {
 			return ec.marshalNBoolean2bool(ctx, selections, v)
 		},
@@ -1966,7 +1980,20 @@ func (ec *executionContext) _Mutation_updateProfile(ctx context.Context, field g
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().UpdateProfile(ctx, fc.Args["input"].(dto.UpdateProfileRequest))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.UserResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.UserResponse) graphql.Marshaler {
 			return ec.marshalNUser2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐUserResponse(ctx, selections, v)
 		},
@@ -2010,7 +2037,20 @@ func (ec *executionContext) _Mutation_createCategory(ctx context.Context, field 
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().CreateCategory(ctx, fc.Args["input"].(dto.CreateCategoryRequest))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.CategoryResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.CategoryResponse) graphql.Marshaler {
 			return ec.marshalNCategory2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐCategoryResponse(ctx, selections, v)
 		},
@@ -2054,7 +2094,20 @@ func (ec *executionContext) _Mutation_updateCategory(ctx context.Context, field 
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().UpdateCategory(ctx, fc.Args["id"].(string), fc.Args["input"].(dto.UpdateCategoryRequest))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.CategoryResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.CategoryResponse) graphql.Marshaler {
 			return ec.marshalNCategory2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐCategoryResponse(ctx, selections, v)
 		},
@@ -2098,7 +2151,20 @@ func (ec *executionContext) _Mutation_deleteCategory(ctx context.Context, field 
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().DeleteCategory(ctx, fc.Args["id"].(string))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal bool
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v bool) graphql.Marshaler {
 			return ec.marshalNBoolean2bool(ctx, selections, v)
 		},
@@ -2142,7 +2208,20 @@ func (ec *executionContext) _Mutation_createProduct(ctx context.Context, field g
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().CreateProduct(ctx, fc.Args["input"].(dto.CreateProductRequest))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.ProductResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.ProductResponse) graphql.Marshaler {
 			return ec.marshalNProduct2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐProductResponse(ctx, selections, v)
 		},
@@ -2186,7 +2265,20 @@ func (ec *executionContext) _Mutation_updateProduct(ctx context.Context, field g
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().UpdateProduct(ctx, fc.Args["id"].(string), fc.Args["input"].(dto.UpdateProductRequest))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.ProductResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.ProductResponse) graphql.Marshaler {
 			return ec.marshalNProduct2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐProductResponse(ctx, selections, v)
 		},
@@ -2230,7 +2322,20 @@ func (ec *executionContext) _Mutation_deleteProduct(ctx context.Context, field g
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().DeleteProduct(ctx, fc.Args["id"].(string))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal bool
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v bool) graphql.Marshaler {
 			return ec.marshalNBoolean2bool(ctx, selections, v)
 		},
@@ -2274,7 +2379,20 @@ func (ec *executionContext) _Mutation_addToCart(ctx context.Context, field graph
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().AddToCart(ctx, fc.Args["input"].(dto.AddToCartRequest))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.CartResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.CartResponse) graphql.Marshaler {
 			return ec.marshalNCart2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐCartResponse(ctx, selections, v)
 		},
@@ -2318,7 +2436,20 @@ func (ec *executionContext) _Mutation_updateCart(ctx context.Context, field grap
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().UpdateCart(ctx, fc.Args["input"].(dto.UpdateCartRequest))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.CartResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.CartResponse) graphql.Marshaler {
 			return ec.marshalNCart2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐCartResponse(ctx, selections, v)
 		},
@@ -2362,7 +2493,20 @@ func (ec *executionContext) _Mutation_removeFromCart(ctx context.Context, field 
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Mutation().RemoveFromCart(ctx, fc.Args["input"].(dto.RemoveFromCartRequest))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.CartResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.CartResponse) graphql.Marshaler {
 			return ec.marshalNCart2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐCartResponse(ctx, selections, v)
 		},
@@ -2405,7 +2549,20 @@ func (ec *executionContext) _Mutation_createOrder(ctx context.Context, field gra
 		func(ctx context.Context) (any, error) {
 			return ec.Resolvers.Mutation().CreateOrder(ctx)
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.OrderResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.OrderResponse) graphql.Marshaler {
 			return ec.marshalNOrder2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐOrderResponse(ctx, selections, v)
 		},
@@ -2956,7 +3113,20 @@ func (ec *executionContext) _Query_me(ctx context.Context, field graphql.Collect
 		func(ctx context.Context) (any, error) {
 			return ec.Resolvers.Query().Me(ctx)
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.UserResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.UserResponse) graphql.Marshaler {
 			return ec.marshalNUser2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐUserResponse(ctx, selections, v)
 		},
@@ -3152,7 +3322,20 @@ func (ec *executionContext) _Query_cart(ctx context.Context, field graphql.Colle
 		func(ctx context.Context) (any, error) {
 			return ec.Resolvers.Query().Cart(ctx)
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.CartResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.CartResponse) graphql.Marshaler {
 			return ec.marshalNCart2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐCartResponse(ctx, selections, v)
 		},
@@ -3184,7 +3367,20 @@ func (ec *executionContext) _Query_orders(ctx context.Context, field graphql.Col
 		func(ctx context.Context) (any, error) {
 			return ec.Resolvers.Query().Orders(ctx)
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal []*dto.OrderResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v []*dto.OrderResponse) graphql.Marshaler {
 			return ec.marshalNOrder2ᚕᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐOrderResponseᚄ(ctx, selections, v)
 		},
@@ -3217,7 +3413,20 @@ func (ec *executionContext) _Query_order(ctx context.Context, field graphql.Coll
 			fc := graphql.GetFieldContext(ctx)
 			return ec.Resolvers.Query().Order(ctx, fc.Args["id"].(string))
 		},
-		nil,
+		func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+			directive0 := next
+
+			directive1 := func(ctx context.Context) (any, error) {
+				if ec.Directives.Auth == nil {
+					var zeroVal *dto.OrderResponse
+					return zeroVal, errors.New("directive auth is not implemented")
+				}
+				return ec.Directives.Auth(ctx, nil, directive0)
+			}
+
+			next = directive1
+			return next
+		},
 		func(ctx context.Context, selections ast.SelectionSet, v *dto.OrderResponse) graphql.Marshaler {
 			return ec.marshalNOrder2ᚖgithubᚗcomᚋkunalavghadeᚋGoᚑbasicsᚋgoᚑapiᚋinternalᚋdtoᚐOrderResponse(ctx, selections, v)
 		},
