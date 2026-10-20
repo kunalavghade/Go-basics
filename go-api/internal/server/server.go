@@ -80,6 +80,14 @@ func (s *Server) SetupRoutes() *gin.Engine {
 		c.Header("Content-Type", "text/html; charset=utf-8")
 		c.String(http.StatusOK, docs.SwaggerUIHTML)
 	})
+	router.Static("/uploads", "./uploads")
+
+	// graphql
+	router.GET("/playground", s.PlaygroundHandler())
+	graphqlProtected := router.Group("/graphql")
+	graphqlProtected.Use(s.authMiddleware())
+	graphqlProtected.Use(s.GraphQLMiddleware())
+	graphqlProtected.POST("/graphql", s.GraphQLHandler())
 
 	api := router.Group("/api")
 	{
