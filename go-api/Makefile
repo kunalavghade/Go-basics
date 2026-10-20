@@ -61,3 +61,11 @@ docker-up:
 
 docker-down:
 	docker compose -f docker/docker-compose.yml down
+
+graph-gen:
+	@which gqlgen > /dev/null 2>&1 || [ -f $(shell go env GOPATH)/bin/gqlgen ] || (echo "Installing gqlgen..." && go install github.com/99designs/gqlgen@latest)
+	@if which gqlgen > /dev/null 2>&1; then \
+		gqlgen generate; \
+	else \
+		$(shell go env GOPATH)/bin/gqlgen generate; \
+	fi

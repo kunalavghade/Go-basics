@@ -1,0 +1,119 @@
+schema:
+  - graph/schema/*.graphqls
+  - graph/schema/*.graphql
+
+exec:
+  filename: graph/generated.go
+  package: graph
+
+model:
+  filename: graph/model/model_gen.go
+  package: model
+
+resolver:
+  layout: follow-schema
+  dir: graph/resolver
+  package: resolver
+  filename_template: "{name}.resolvers.go"
+
+autobind:
+  - "github.com/kunalavghade/Go-basics/go-api/internal/dto"
+
+models:
+  ID:
+    model:
+      - github.com/99designs/gqlgen/graphql.ID
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+  Int:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+
+  # User & Authentication Models
+  User:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UserResponse
+  UserResponse:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UserResponse
+  AuthenticationResponse:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.AuthenticationResponse
+  RegisterInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.RegisterRequest
+  RegisterRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.RegisterRequest
+  LoginInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.LoginRequest
+  LoginRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.LoginRequest
+  RequestTokenInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.RequestTokenRequest
+  RequestTokenRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.RequestTokenRequest
+  UpdateProfileInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UpdateProfileRequest
+  UpdateProfileRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UpdateProfileRequest
+
+  # Category Models
+  Category:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CategoryResponse
+  CategoryResponse:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CategoryResponse
+  CreateCategoryInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CreateCategoryRequest
+  CreateCategoryRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CreateCategoryRequest
+  UpdateCategoryInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UpdateCategoryRequest
+  UpdateCategoryRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UpdateCategoryRequest
+
+  # Product Models
+  Product:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.ProductResponse
+  ProductResponse:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.ProductResponse
+  ProductImage:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.ProductImageResponse
+  ProductImageResponse:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.ProductImageResponse
+  CreateProductInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CreateProductRequest
+  CreateProductRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CreateProductRequest
+  UpdateProductInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UpdateProductRequest
+  UpdateProductRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UpdateProductRequest
+
+  # Cart Models
+  Cart:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CartResponse
+  CartResponse:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CartResponse
+  CartItem:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CartItemResponse
+  CartItemResponse:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.CartItemResponse
+  AddToCartInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.AddToCartRequest
+  AddToCartRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.AddToCartRequest
+  UpdateCartInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UpdateCartRequest
+  UpdateCartRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.UpdateCartRequest
+  RemoveFromCartInput:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.RemoveFromCartRequest
+  RemoveFromCartRequest:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.RemoveFromCartRequest
+
+  # Order Models
+  Order:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.OrderResponse
+  OrderResponse:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.OrderResponse
+  OrderItem:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.OrderItemResponse
+  OrderItemResponse:
+    model: github.com/kunalavghade/Go-basics/go-api/internal/dto.OrderItemResponse

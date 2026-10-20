@@ -1,0 +1,71 @@
+scalar Time
+
+type User {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  phone: String!
+  role: String!
+  isActive: Boolean!
+}
+
+type AuthenticationResponse {
+  user: User!
+  accessToken: String!
+  refreshToken: String!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  description: String!
+  isActive: Boolean!
+}
+
+type ProductImage {
+  id: ID!
+  productId: Int!
+  imageUrl: String!
+}
+
+type Product {
+  id: ID!
+  categoryId: Int!
+  name: String!
+  description: String!
+  price: Float!
+  stock: Int!
+  sku: String!
+  category: Category!
+  images: [ProductImage!]!
+}
+
+type CartItem {
+  id: ID!
+  product: Product!
+  quantity: Int!
+  subTotal: Float!
+}
+
+type Cart {
+  id: ID!
+  userId: Int!
+  cartItem: [CartItem!]!
+  total: Float!
+}
+
+type OrderItem {
+  id: ID!
+  product: Product!
+  quantity: Int!
+  price: Float!
+}
+
+type Order {
+  id: ID!
+  userId: Int!
+  status: String!
+  totalAmount: Float!
+  orderItems: [OrderItem!]!
+}
